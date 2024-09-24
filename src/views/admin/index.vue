@@ -9,10 +9,8 @@
     <div class="gvb_head">
       <Gvb_bread_crumb></Gvb_bread_crumb>
       <div class="gvb_function_area">
-        <IconMenu class="action_icon"></IconMenu>
-        <div class="gvb_theme">
-          <IconSun class="action_icon"></IconSun>
-        </div>
+        <IconHome class="action_icon" @click="goIndex"></IconHome>
+        <Gvb_theme></Gvb_theme>
         <div class="gvb_user_info_menu">
           <a-dropdown>
             <div class="gvb_user_info_menu_dropdown">
@@ -25,11 +23,6 @@
               <a-doption disabled>Option 2</a-doption>
               <a-doption>Option 3</a-doption>
               <a-doption>Option 4</a-doption>
-              <a-doption>Option 5</a-doption>
-              <a-doption>Option 6</a-doption>
-              <a-doption>Option 7</a-doption>
-              <a-doption>Option 8</a-doption>
-              <a-doption>Option 9</a-doption>
             </template>
           </a-dropdown>
         </div>
@@ -51,23 +44,28 @@
 import Gvb_menu from "@/components/admin/gvb_menu.vue";
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
 import Gvb_logo from "@/components/admin/gvb_logo.vue";
-
+import Gvb_theme from "@/components/common/gvb_theme.vue";
+import type {Component} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {IconMenu, IconUser} from "@arco-design/web-vue/es/icon";
+import Gvb_tabs from "@/components/admin/gvb_tabs.vue";
 import {
-  IconSun,
+  IconHome,
   IconDown,
 } from '@arco-design/web-vue/es/icon';
 
-
 import {ref, watch} from "vue";
-import type {Component} from "vue";
-import {useRoute, useRouter} from "vue-router";
 
-import {IconMenu, IconUser} from "@arco-design/web-vue/es/icon";
-import Gvb_tabs from "@/components/admin/gvb_tabs.vue";
+
 
 const route = useRoute()
 const router = useRouter()
 
+function goIndex(){
+  router.push({
+    name:"index"
+  })
+}
 
 </script>
 <style scoped>
@@ -80,6 +78,7 @@ const router = useRouter()
     width: 240px;
     border-right: 1px solid var(--bg);
     height: 100vh;
+    background-color: var(--color-bg-1);
 
   }
 
@@ -97,6 +96,8 @@ const router = useRouter()
       justify-content: space-between;
       padding: 0 20px;
       align-items: center;
+      background-color: var(--color-bg-1);
+
 
       .gvb_function_area {
         display: flex;
@@ -107,6 +108,11 @@ const router = useRouter()
           margin-right: 10px;
           cursor: pointer;
           font-size: 16px;
+          transition:color .3s;
+
+          &:hover{
+            color: var(--active);
+          }
         }
 
 

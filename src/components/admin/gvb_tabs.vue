@@ -1,16 +1,20 @@
-
-
 <template>
   <div class="gvb_tabs">
-    <span
-        v-for="(item, index) in tabList" :key="item.name"
-        :class="{gvb_tab: true, active: route.name === item.name}"
-        @click="clickTab(item)"
-        @click.middle="closeTab(item)"
+    <swiper
+        :slides-per-view="slidesperview"
+        class="mySwiper"
     >
-     {{ item.title }}
-      <IconClose @click.stop="closeTab(item)" v-if="item.name !== 'home'"></IconClose>
+      <swiper-slide v-for="(item, index) in tabList" :key="item.name">
+   <span
+       :class="{gvb_tab: true, active: route.name === item.name}"
+       @click="clickTab(item)"
+       @click.middle="closeTab(item)">
+  {{ item.title }}
+  <IconClose @click.stop="closeTab(item)" v-if="item.name !== 'home'"></IconClose>
    </span>
+      </swiper-slide>
+    </swiper>
+
     <span @click="closeAllTab" class="gvb_tab close_all_tab">全部关闭</span>
   </div>
 </template>
@@ -19,6 +23,52 @@ import {IconClose} from "@arco-design/web-vue/es/icon";
 import type {Ref} from "vue";
 import {ref, watch, onMounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
+import {Swiper, SwiperSlide} from 'swiper/vue';
+
+
+/*
+方案1
+教程的系统，大部分还是4个字的，所以直接用总宽度除以90，向下取整
+*/
+const slidesPerView = ref(12)
+onMounted(()=>{
+  let mySwiper = document.querySelector(".mySwiper")
+  slidesPerView.value=Math.round(mySwiper.clientWidth / 90)
+})
+
+
+/*方案2
+先算总宽度
+算实际宽度（`scrollWidth`）有没有超出总宽度
+如果超出了总宽度，就遍历所有的`swiper-slide`
+从前往后加，如果超过了总宽度，那个时候的个数，就是实际显示的个数
+const slidesPerView = ref(12)
+*/
+/*
+onMounted(() => {
+  // 总宽度
+  let mySwiperWith = document.querySelector(".mySwiper").clientWidth
+  // 实际宽度
+  let actualWidth = document.querySelector(".swiper-wrapper").scrollWidth
+  if (actualWidth <= mySwiperWith) {
+    return
+  }
+  let swiperSlideList = document.querySelectorAll(".swiper-wrapper .swiper-slide")
+
+  let sum = 0
+  let count = 0
+
+  for (const slide of swiperSlideList) {
+    sum += slide.clientWidth
+    if (sum > mySwiperWith) {
+      break
+    }
+    count++
+  }
+  slidesPerView.value = count
+})
+*/
+
 
 
 const route = useRoute()
@@ -111,45 +161,72 @@ function inList(name: string): boolean {
 
 </script>
 <style lang="scss">
-.gvb_tabs{
+.gvb_tabs {
   height: 30px;
   width: 100%;
   border-bottom: 1px solid var(--bg);
   padding: 0 20px;
   display: flex;
   align-items: center;
+  position: relative;
+  background-color: var(--color-bg-1);
 
-  .gvb_tab{
+
+  //动态计算可以放多少个tab
+  .mySwiper {
+    width: calc(100% - 94px);
+    overflow: hidden;
+    white-space: nowrap;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    .swiper-wrapper {
+      display: flex;
+      justify-content: start;
+      width: 100%;
+
+      .swiper-slide {
+        width: auto !important;
+      }
+    }
+  }
+
+  .gvb_tab {
     border-radius: 5px;
     border: 1px solid var(--bg);
     padding: 2px 10px;
     margin-right: 10px;
     cursor: pointer;
-    position: relative;
 
-    &.active{
+
+    &.active {
       background-color: var(--active);
-      color:white;
+      color: white;
       border: none;
-      &:hover{
-        background-color:
-            rgb(var(--arcoblue-7));
+
+      &:hover {
+        background-color: rgb(var(--arcoblue-7));
       }
     }
-    svg{
+
+    svg {
       font-size: 15px;
       border-radius: 10%;
-      &:hover{
-        background-color:
-            rgb(var(--arcoblue-5));
+
+      &:hover {
+        background-color: rgb(var(--arcoblue-5));
       }
     }
   }
-  .close_all_tab{
-    position: absolute;
-    right: 20px;
+
+  .close_all_tab {
+    // 这个地方在跟着滚动
+    position: relative;
+    right: -20px;
     margin-right: 0;
-    &:hover{
+
+    &:hover {
       background-color: var(--bg);
     }
   }
