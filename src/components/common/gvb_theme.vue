@@ -1,5 +1,5 @@
 <template>
-<div @click="setTheme" class="action_icon">
+<div @click="store.setTheme()" class="action_icon">
   <IconSun v-if="store.theme"></IconSun>
   <IconMoon v-else></IconMoon>
 </div>
@@ -10,11 +10,9 @@
 
 import {IconSun,IconMoon} from "@arco-design/web-vue/es/icon";
 import {useStore} from "@/stores";
-const store = useStore();
 
-function  setTheme(){
-  store.theme=!store.theme
-  document.documentElement.style.colorScheme = store.themeString
-  document.body.setAttribute('arco-theme', store.themeString)
-}
+const store = useStore();
+store.loadTheme()
+
+
 </script>

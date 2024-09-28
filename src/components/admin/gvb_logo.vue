@@ -8,6 +8,8 @@
   </div>
 </template>
 
+
+
 <style  scoped lang="scss">
 .gvb_logo {
   border-bottom: 1px solid var(--bg);
@@ -15,15 +17,24 @@
   display: flex;
   padding: 20px;
   align-items: center;
+  transition: all .3s;
+
+
 
   img {
     width: 60px;
     height: 60px;
     border-radius: 15px;
+    transition: all .3s;
+
   }
 
   .logo_head {
     margin-left: 20px;
+    transition: all .3s;
+    transform: scale(1);
+    transform-origin: left;
+
 
     > div:nth-child(1) {
       font-size: 20px;
@@ -34,6 +45,19 @@
 
   > div:nth-child(2) {
     font-size: 15px;
+  }
+}
+
+.collapsed{
+  .gvb_logo{
+    padding: 2px;
+    img{
+      width: 40px;
+      height: 40px;
+    }
+    .logo_head{
+      transform: scale(0);
+    }
   }
 }
 </style>

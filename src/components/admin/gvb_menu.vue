@@ -4,8 +4,10 @@
         @menu-item-click="clickMenu"
         v-model:selected-keys="selectedKeys"
         v-model:open-keys="openKeys"
+        show-collapse-button
+        @collapse="collapse"
     >
-      <template v-for="item in menuList" :key="item.key">
+      <template v-for="item in menuList" :key="item.name">
         <a-menu-item :key="item.name" v-if="item.child?.length === 0">
           {{ item.title }}
           <template #icon>
@@ -35,13 +37,15 @@
 import {ref, watch} from "vue";
 import type {Component} from "vue";
 import {useRoute, useRouter} from "vue-router";
-
 import {IconMenu, IconUser} from "@arco-design/web-vue/es/icon";
+import {useStore} from "@/stores";
 
+
+const store = useStore()
 const route = useRoute()
 const router = useRouter()
+
 interface MenuType {
-  key: string
   title: string
   icon?: Component
   name?: string // 路由名字
@@ -50,30 +54,31 @@ interface MenuType {
 
 
 const menuList: MenuType[] = [
-  {key: "1", title: "首页", icon: IconMenu, name: "home", child: []},
+  {title: "首页", icon: IconMenu, name: "home", child: []},
   {
-    key: "2", title: "个人中心", icon: IconUser, name: "user_center", child: [
-      {key: "2-1", title: "我的信息", icon: IconUser, name: "user_info"},
+    title: "个人中心", icon: IconUser, name: "user_center", child: [
+      {title: "我的信息", icon: IconUser, name: "user_info"},
     ]
   },
   {
-    key: "3", title: "文章管理", icon: IconUser, name: "article", child: [
-      {key: "3-1", title: "文章列表", icon: IconUser, name: "article_list"},
+    title: "文章管理", icon: IconUser, name: "article", child: [
+      {title: "文章列表", icon: IconUser, name: "article_list"},
     ]
   },
   {
-    key: "4", title: "用户管理", icon: IconUser, name: "users", child: [
-      {key: "4-1", title: "用户列表", icon: IconUser, name: "user_list"},
+    title: "用户管理", icon: IconUser, name: "users", child: [
+      {title: "用户列表", icon: IconUser, name: "user_list"},
     ]
   },
   {
-    key: "5", title: "群聊管理", icon: IconUser, name: "chat_group", child: [
-      {key: "5-1", title: "聊天记录", icon: IconUser, name: "chat_list"},
+    title: "群聊管理", icon: IconUser, name: "chat_group", child: [
+      {title: "聊天记录", icon: IconUser, name: "chat_list"},
     ]
   },
   {
-    key: "6", title: "系统管理", icon: IconUser, name: "system", child: [
-      {key: "6-1", title: "菜单列表", icon: IconUser, name: "menu_list"},
+    title: "系统管理", icon: IconUser, name: "system", child: [
+      {title: "菜单列表", icon: IconUser, name: "menu_list"},
+      {title: "系统日志", icon: IconUser, name: "log_list"},
     ]
   },
 
@@ -84,15 +89,45 @@ const selectedKeys = ref([route.name])
 const openKeys = ref([route.matched[1].name])
 
 
+function collapse(collapsed: boolean) {
+  store.setCollapsed(collapsed)
+}
+
 function clickMenu(name: string) {
   router.push({
     name: name,
   })
 }
 
-watch(()=>route.name, ()=>{
+watch(() => route.name, () => {
   selectedKeys.value = [route.name]
   openKeys.value = [route.matched[1].name]
 })
 
 </script>
+
+<style lang="scss">
+.gvb_menu {
+  .arco-menu {
+    position: inherit;
+
+  }
+
+  .arco-menu-collapse-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+    opacity: 0;
+    transition: all .3s;
+  }
+}
+
+aside:hover {
+  .gvb_menu {
+    .arco-menu-collapse-button {
+      opacity: 1;
+    }
+  }
+}
+</style>

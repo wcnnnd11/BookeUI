@@ -1,7 +1,7 @@
 <template>
   <div class="gvb_tabs">
     <swiper
-        :slides-per-view="slidesperview"
+        :slides-per-view="slidesPerView"
         class="mySwiper"
     >
       <swiper-slide v-for="(item, index) in tabList" :key="item.name">
@@ -24,6 +24,7 @@ import type {Ref} from "vue";
 import {ref, watch, onMounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {Swiper, SwiperSlide} from 'swiper/vue';
+import type {tabType} from "@/types";
 
 
 /*
@@ -32,7 +33,7 @@ import {Swiper, SwiperSlide} from 'swiper/vue';
 */
 const slidesPerView = ref(12)
 onMounted(()=>{
-  let mySwiper = document.querySelector(".mySwiper")
+  let mySwiper = (document.querySelector(".mySwiper")as Element)
   slidesPerView.value=Math.round(mySwiper.clientWidth / 90)
 })
 
@@ -74,10 +75,7 @@ onMounted(() => {
 const route = useRoute()
 const router = useRouter()
 
-interface tabType {
-  name: string
-  title: string
-}
+
 
 const tabList: Ref<tabType[]> = ref([
   {name: "home", title: "首页"},
