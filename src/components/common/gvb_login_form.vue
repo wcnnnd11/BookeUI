@@ -1,4 +1,3 @@
-
 <template>
   <a-form class="gvb_login_form" ref="formRef" :model="form" :label-col-props="{span:0}" :wrapper-col-props="{span:24}">
     <div class="title">用户登录</div>
@@ -9,7 +8,7 @@
     >
       <a-input v-model="form.user_name" placeholder="用户名">
         <template #prefix>
-          <icon-user />
+          <icon-user/>
         </template>
       </a-input>
     </a-form-item>
@@ -19,24 +18,22 @@
     >
       <a-input type="password" v-model="form.password" placeholder="密码">
         <template #prefix>
-          <icon-lock />
+          <icon-lock/>
         </template>
       </a-input>
     </a-form-item>
     <a-button type="primary" @click="loginEmail">登录</a-button>
     <div class="other_login">
-
       <div class="label">第三方登录</div>
       <div class="icons">
-        <a href="">
+        <a href="javascript:void (0)" @click="qqLogin">
           <img src="/image/icon/qq.png" alt="">
         </a>
       </div>
-
-
     </div>
   </a-form>
 </template>
+
 <script setup lang="ts">
 import "@/assets/font.css"
 import {IconLock, IconUser} from "@arco-design/web-vue/es/icon";
@@ -45,9 +42,11 @@ import {useStore} from "@/stores";
 
 import {reactive, ref} from "vue";
 import {loginEmailApi} from "@/api/user_api";
+import {loginQQPathApi} from "@/api/user_api";
 import type {loginEmailType} from "@/api/user_api";
+import {useRoute} from "vue-router";
 
-
+const route = useRoute()
 const emits = defineEmits(["ok"])
 const formRef = ref()
 
@@ -67,15 +66,14 @@ async function loginEmail() {
   emits("ok")
 }
 
-
 const store = useStore()
 
 const form = reactive<loginEmailType>({
-  user_name:"",
-  password:"",
+  user_name: "",
+  password: "",
 })
 
-function formReset(){
+function formReset() {
   formRef.value.resetFields(Object.keys(form))
   formRef.value.clearValidate(Object.keys(form))
 }
@@ -84,12 +82,41 @@ defineExpose({
   formReset
 })
 
+const props = defineProps({
+  qqRedirectPath: {
+    type: String,
+  }
+})
 
+//回调地址有问题，先放着
+async function qqLogin() {
+  let res = await loginQQPathApi()
+  if (res.code) {
+    Message.error(res.msg)
+    return
+  }
+  if (res.data === "") {
+    Message.warning("未配置qq登录")
+    return
+  }
+
+  // 存一下我当前点登录的路径
+  // 判断是不是login页面来的
+  let path = route.path
+  if (props.qqRedirectPath) {
+    path = props.qqRedirectPath
+  }
+  localStorage.setItem("redirectPath", path)
+
+  window.open(res.data, "_self")
+
+}
 
 </script>
-<style  lang="scss">
-.gvb_login_form{
-  .title{
+
+<style lang="scss">
+.gvb_login_form {
+  .title {
     font-family: 汉幼;
     font-size: 20px;
     font-weight: 700;
@@ -97,38 +124,41 @@ defineExpose({
     margin-bottom: 30px;
     color: var(--color-text-1);
   }
-  .other_login{
+
+  .other_login {
 
     margin-top: 20px;
 
-    .label{
+    .label {
       display: flex;
       align-items: center;
       color: var(--color-text-1);
       justify-content: space-between;
-      &::before{
+
+      &::before {
         display: inline-flex;
         width: 35%;
         height: 1px;
-        content:"";
+        content: "";
         background-color: var(--color-text-4);
       }
-      &::after{
+
+      &::after {
         display: inline-flex;
         width: 35%;
         height: 1px;
-        content:"";
+        content: "";
         background-color: var(--color-text-4);
       }
     }
 
-    .icons{
+    .icons {
 
       display: flex;
       justify-content: center;
       margin-top: 10px;
 
-      img{
+      img {
         height: 30px;
         width: 30px;
       }

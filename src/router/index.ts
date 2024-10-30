@@ -175,12 +175,13 @@ router.beforeEach((to, from, next) => {
                 return
     }
     //如果我是游客，那我就不能访问游客权限为false的
-    if (store.isAdmin && !meta.isTourist){
+    if (store.isAdmin && meta.isTourist){
         Message.warning("权限不足2")
         router.push({name: from.name as string})
         return
     }
 
+    // 弃用，逻辑不清晰
     // if (meta.isAdmin) {
     //     // 需要管理员权限
     //     // 管理员能看，游客也能看

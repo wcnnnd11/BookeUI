@@ -2,7 +2,7 @@
   <div class="gvb_logo">
     <img src="/image/logo.png" alt="booke">
     <div class="logo_head">
-      <div>书识</div>
+      <div>博书</div>
       <div>Booke</div>
     </div>
   </div>
