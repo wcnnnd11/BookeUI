@@ -4,7 +4,7 @@
     <div class="gvb_table_head">
 
       <div class="action_create">
-        <a-button type="primary">添加</a-button>
+        <a-button type="primary" @click="add">{{ addLabel }}</a-button>
       </div>
 
       <div class="action_group">
@@ -35,7 +35,7 @@
 
     <div class="gvb_table_data">
       <div class="gvb_table_source">
-        <a-table row-key="id" :columns="props.columns" :data="data.list" :row-selection="rowSelection"
+        <a-table row-key=rowKey :columns="props.columns" :data="data.list" :row-selection="rowSelection"
                  v-model:selectedKeys="selectedKeys" :pagination="false">
 
           <template #columns>
@@ -51,8 +51,10 @@
               <a-table-column :title="item.title as string" v-else>
                 <template #cell="{record}" v-if="item.slotName === 'action'">
                   <div class="gvb_cell_actions">
-                    <a-button type="primary">编辑</a-button>
-                    <a-button status="danger" type="primary">删除</a-button>
+                    <a-button type="primary" @click="edit(record)">编辑</a-button>
+                    <a-popconfirm content="要消失吗?" @ok="remove(record)">
+                      <a-button status="danger" type="primary">删除</a-button>
+                    </a-popconfirm>
                   </div>
                 </template>
                 <template #cell="{record}" v-else-if="item.slotName === 'created_at'">
@@ -82,18 +84,62 @@ import {IconRefresh} from "@arco-design/web-vue/es/icon";
 import {reactive, ref} from "vue";
 import type {baseResponse, listDataType} from "@/api";
 import type {paramsType} from "@/api";
-import {Message, type TableColumnData, type TableRowSelection} from "@arco-design/web-vue";
+import {Message, type TableColumnData, type TableData, type TableRowSelection} from "@arco-design/web-vue";
 import {dateTimeFormat} from "@/utils/date";
+import {defaultDeleteApi} from "@/api";
 
 
 interface Props {
   url: (params: paramsType) => Promise<baseResponse<listDataType<any>>>
   columns: TableColumnData[]
   limit?: number
+  rowKey?: string
+  addLabel?: string
+  defaultDelete?: boolean  // 是否启用默认删除
 }
 
 const props = defineProps<Props>()
-const {limit = 10} = props
+
+const {
+  limit = 10,
+  rowKey = "id",
+  addLabel = "添加",
+} = props
+
+const emits = defineEmits(["add", "edit", "remove"])
+
+function add() {
+  emits("add")
+}
+
+function edit(record: TableData) {
+  emits("edit", record);
+}
+
+const urlRegex = /return useAxios.get\("(.*?)",.*?\)/
+
+
+async function remove(record: TableData) {
+  let id = record[rowKey]
+
+  if (props.defaultDelete) {
+    let regexResult = urlRegex.exec(props.url.toString())
+    if (regexResult === null || regexResult.length !== 2) {
+      return
+    }
+    let res = await defaultDeleteApi(regexResult[1], [id])
+    console.log(res)
+    if (res.code){
+      Message.error(res.msg)
+      return
+    }
+    Message.success(res.msg)
+    flush()
+    return;
+  }
+  emits("remove", [id])
+
+}
 
 const data = reactive<listDataType<any>>({
   list: [],

@@ -13,12 +13,10 @@ export interface baseResponse<T> {
 }
 
 
-export interface listDataType<T>{
+export interface listDataType<T> {
     count: number
     list: T[]
 }
-
-
 
 
 export interface paramsType {
@@ -47,3 +45,12 @@ useAxios.interceptors.response.use((response) => {
     Message.error(err.message)
     return Promise.reject(err.message)
 })
+
+
+export function defaultDeleteApi<T>(url: string, idList: T[]): Promise<baseResponse<string>> {
+    return useAxios.delete(url, {
+        data: {
+            id_list: idList,
+        }
+    })
+}
