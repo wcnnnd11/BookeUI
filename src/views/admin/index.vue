@@ -1,29 +1,29 @@
 <template>
-<div class="gvb_admin">
-  <aside :class="{collapsed: store.collapsed}">
-    <Gvb_logo></Gvb_logo>
-    <Gvb_menu></Gvb_menu>
-  </aside>
-  <main>
-    <div class="gvb_head">
-      <Gvb_bread_crumb></Gvb_bread_crumb>
-      <div class="gvb_function_area">
-        <IconHome class="action_icon" @click="goIndex"></IconHome>
-        <Gvb_theme></Gvb_theme>
-        <Gvb_user_info_menu></Gvb_user_info_menu>
+  <div class="gvb_admin">
+    <aside :class="{collapsed: store.collapsed}">
+      <Gvb_logo></Gvb_logo>
+      <Gvb_menu></Gvb_menu>
+    </aside>
+    <main>
+      <div class="gvb_head">
+        <Gvb_bread_crumb></Gvb_bread_crumb>
+        <div class="gvb_function_area">
+          <IconHome class="action_icon" @click="goIndex"></IconHome>
+          <Gvb_theme></Gvb_theme>
+          <Gvb_user_info_menu></Gvb_user_info_menu>
+        </div>
       </div>
-    </div>
-    <Gvb_tabs></Gvb_tabs>
-    <div class="gvb_container">
-      <router-view v-slot="{Component}">
-        <transition name="fade" mode="out-in">
-          <component :is="Component"></component>
-        </transition>
-      </router-view>
-    </div>
-  </main>
+      <Gvb_tabs></Gvb_tabs>
+      <div class="gvb_container">
+        <router-view v-slot="{Component}">
+          <transition name="fade" mode="out-in">
+            <component :is="Component"></component>
+          </transition>
+        </router-view>
+      </div>
+    </main>
 
-</div>
+  </div>
 </template>
 <script setup lang="ts">
 import Gvb_menu from "@/components/admin/gvb_menu.vue";
@@ -39,15 +39,13 @@ import {useStore} from "@/stores";
 import Gvb_user_info_menu from "@/components/common/gvb_user_info_menu.vue";
 
 
-
-
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
 
-function goIndex(){
+function goIndex() {
   router.push({
-    name:"index"
+    name: "index"
   })
 }
 
@@ -73,7 +71,7 @@ function goIndex(){
     width: 49px;
 
 
-    & ~ main{
+    & ~ main {
       width: calc(100% - 49px);
     }
   }
@@ -101,25 +99,23 @@ function goIndex(){
         align-items: center;
 
 
-
         .action_icon {
           margin-right: 10px;
           cursor: pointer;
           font-size: 16px;
-          transition:color .3s;
+          transition: color .3s;
 
-          &:hover{
+          &:hover {
             color: var(--active);
           }
         }
 
 
-
       }
     }
 
-    .gvb_container{
-      background-color:  var(--bg);
+    .gvb_container {
+      background-color: var(--bg);
       min-height: calc(100vh - 90px);
       padding: 20px;
     }
@@ -127,9 +123,6 @@ function goIndex(){
 
   }
 }
-
-
-
 
 
 </style>

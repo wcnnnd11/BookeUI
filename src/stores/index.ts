@@ -1,8 +1,6 @@
 import {defineStore} from 'pinia'
 import {parseToken} from "@/utils/jwt";
 import {logoutApi} from "@/api/user_api";
-import {userInfoApi} from "@/api/user_api";
-import type {userInfoType} from "@/api/user_api";
 
 export interface userStoreInfoType {
     user_name: string;

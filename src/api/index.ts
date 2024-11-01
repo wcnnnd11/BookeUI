@@ -12,6 +12,22 @@ export interface baseResponse<T> {
     msg: string
 }
 
+
+export interface listDataType<T>{
+    count: number
+    list: T[]
+}
+
+
+
+
+export interface paramsType {
+    page?: number
+    limit?: number
+    key?: string
+    sort?: string
+}
+
 useAxios.interceptors.request.use((config) => {
     const store = useStore()
     config.headers["token"] = store.userInfo.token
