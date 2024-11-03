@@ -1,33 +1,35 @@
-# gvb_web_ts
+# Booke-博书UI
 
-This template should help get you started developing with Vue 3 in Vite.
+## 项目简介
 
-## Recommended IDE Setup
+Booke-博书UI
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 技术栈
 
-## Type Support for `.vue` Imports in TS
+- **Vue 3**
+- **TypeScript**
+- **Arco Design Pro**
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## 项目创建
 
-## Customize configuration
+要创建此项目，请按照以下步骤操作：
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+1. 使用以下命令初始化 Vue 项目：
 
-## Project Setup
+   ```bash
+   npm init vue@latest
 
-```sh
-npm install
-```
+2. 安装所需依赖：
 
-### Compile and Hot-Reload for Development
+   ```bash
+   npm install --save-dev @arco-design/web-vue
+   npm i axios
+   npm i mockjs
+   npm i @types/mockjs
+   npm install sass --save-dev
 
-```sh
-npm run dev
-```
+3. 拉取代码 
+4. 项目启动：
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+   ```bash
+   npm run dev
