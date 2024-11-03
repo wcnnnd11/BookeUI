@@ -1,6 +1,14 @@
 <template>
   <div>
-    <gvb_table :url="userListApi" :columns="columns" default-delete add-label="创建用户" @add="add" @edit="edit" @remove="remove">
+    <gvb_table :url="userListApi"
+               :columns="columns"
+               default-delete
+               no-check
+               add-label="创建用户"
+               @add="add"
+               @edit="edit"
+               :action-group="actionGroup"
+               @remove="remove">
       <template #avatar="{record}">
         <a-avatar :image-url="record.avatar"></a-avatar>
       </template>
@@ -12,6 +20,7 @@
 import Gvb_table from "@/components/admin/gvb_table.vue";
 import {userListApi} from "@/api/user_api";
 import type {userInfoType} from "@/api/user_api";
+import type {optionType} from "@/components/admin/gvb_table.vue";
 
 const columns = [
   {title: '昵称', dataIndex: 'nick_name'},
@@ -23,16 +32,27 @@ const columns = [
   {title: '注册时间', slotName: 'created_at'},
   {title: '操作', slotName: 'action'},
 ]
+const actionGroup: optionType[] = [
+  {
+    label: "战吼：对以下目标“”",
+    callback: async (idList: (number | string)[]): Promise<boolean> => {
+      return true
+    }
+  }
+]
 
-function add(){
+
+function add() {
+  console.log("add")
+}
+
+function edit(record: userInfoType) {
+  console.log(record)
 
 }
 
-function edit(record:userInfoType){
-
-}
-
-function remove(idList:number[]){
+function remove(idList: number[]) {
+  console.log(idList)
 
 }
 </script>
