@@ -20,11 +20,16 @@
                         @search="search"></a-input-search>
       </div>
 
-      <div class="action_other_search">
-      </div>
+      <slot name="action_other_search"></slot>
 
-      <div class="action_filter">
-        <a-select placeholder="过滤"></a-select>
+
+      <div class="action_filter" v-if="filterGroup.length">
+        <a-select
+            :placeholder="item.label"
+            :options="item.options"
+            allow-clear
+            @change="filterChange(item, $event)"
+            v-for="item in filterGroup"></a-select>
       </div>
 
       <slot name="action_slot"></slot>
@@ -92,12 +97,21 @@ import type {paramsType} from "@/api";
 import {Message, type TableColumnData, type TableData, type TableRowSelection} from "@arco-design/web-vue";
 import {dateTimeFormat} from "@/utils/date";
 import {defaultDeleteApi} from "@/api";
+import type {optionType} from "@/types";
 
-export interface optionType {
+export interface actionOptionType {
   label: string;
-  value?: string | number;
+  value?: number;
   callback?: (idList: (number | string)[]) => Promise<boolean>
 }
+
+export interface filterOptionType{
+  label: string;
+  value?: number;
+  column: string;
+  options:optionType[] | string; // 可以是一个现成的数据，也可以是一个url地址，也可以是一个函数
+}
+
 
 interface Props {
   url: (params: paramsType) => Promise<baseResponse<listDataType<any>>>
@@ -107,8 +121,9 @@ interface Props {
   addLabel?: string
   defaultDelete?: boolean  // 是否启用默认删除
   noActionGroup?: boolean // 不启用操作组
-  actionGroup?: optionType[] // 操作数组
+  actionGroup?: actionOptionType[] // 操作数组
   noCheck?: boolean // 不能选择
+  filterGroup?:filterOptionType[] //过滤组
 }
 
 const props = defineProps<Props>()
@@ -130,8 +145,7 @@ const rowSelection = reactive<TableRowSelection>({
 });
 
 // 操作组
-
-const actionOptions = ref<optionType[]>([
+const actionOptions = ref<actionOptionType[]>([
   {label: "遮蔽风沙吧", value: 0},
 ])
 
@@ -173,6 +187,28 @@ function actionMethod() {
   })
 }
 
+// 过滤组
+const filterGroup = ref<filterOptionType[]>([])
+
+async function initFilterGroup(){
+  if (!props.filterGroup) return
+  for (let i = 0; i < props.filterGroup.length; i++) {
+    filterGroup.value.push({
+      label:props.filterGroup[i].label,
+      value:i,
+      column:props.filterGroup[i].column,
+      options:props.filterGroup[i].options,
+    })
+  }
+}
+
+initFilterGroup()
+
+function filterChange(item: any, val: any) {
+  console.log(item.column, val)
+  getList({[item.column]: val})
+}
+
 
 function add() {
   emits("add")
@@ -188,7 +224,6 @@ const urlRegex = /return useAxios.get\("(.*?)",.*?\)/
 async function remove(record: TableData) {
   let id = record[rowKey]
   removeIdData([id])
-
 }
 
 async function removeIdData(idList: (number | string)[]) {
@@ -222,7 +257,12 @@ const params = reactive<paramsType>({
 
 })
 
-async function getList() {
+
+// 过滤失败了，好像不是role这个参数
+async function getList(p?: paramsType & any) {
+  if (p){
+    Object.assign(params,p)
+  }
   let res = await props.url(params)
   data.list = res.data.list
   data.count = res.data.count
@@ -271,6 +311,15 @@ getList()
 
       button {
         margin-left: 10px;
+      }
+    }
+
+    .action_filter {
+      display: flex;
+
+      > .arco-select {
+        margin-left: 10px;
+
       }
     }
 

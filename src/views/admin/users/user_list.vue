@@ -5,6 +5,7 @@
                default-delete
                no-check
                add-label="创建用户"
+               :filter-group="filterGroup"
                @add="add"
                @edit="edit"
                :action-group="actionGroup"
@@ -17,10 +18,11 @@
 </template>
 <script setup lang="ts">
 
-import Gvb_table from "@/components/admin/gvb_table.vue";
+import Gvb_table, {type actionOptionType} from "@/components/admin/gvb_table.vue";
 import {userListApi} from "@/api/user_api";
 import type {userInfoType} from "@/api/user_api";
-import type {optionType} from "@/components/admin/gvb_table.vue";
+import {ref} from "vue";
+import type {filterOptionType} from "@/components/admin/gvb_table.vue";
 
 const columns = [
   {title: '昵称', dataIndex: 'nick_name'},
@@ -32,9 +34,33 @@ const columns = [
   {title: '注册时间', slotName: 'created_at'},
   {title: '操作', slotName: 'action'},
 ]
-const actionGroup: optionType[] = [
+
+const filterGroup: filterOptionType[] = ref([
   {
-    label: "战吼：对以下目标“”",
+    label: "想要什么？",
+    value: 0,
+    column: "role",
+    options: [
+      {
+        label: "管理员",
+        value: 1,
+      },
+      {
+        label: "普通用户",
+        value: 2,
+      },
+      {
+        label: "游客",
+        value: 3,
+      }
+    ]
+  }
+])
+
+
+const actionGroup: actionOptionType[] = [
+  {
+    label: "战吼：没想好",
     callback: async (idList: (number | string)[]): Promise<boolean> => {
       return true
     }
