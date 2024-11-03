@@ -105,11 +105,15 @@ export interface actionOptionType {
   callback?: (idList: (number | string)[]) => Promise<boolean>
 }
 
-export interface filterOptionType{
+type filterFunc = (params?: paramsType) => Promise<baseResponse<optionType[]>>
+
+
+export interface filterOptionType {
   label: string;
   value?: number;
   column: string;
-  options:optionType[] | string; // 可以是一个现成的数据，也可以是一个url地址，也可以是一个函数
+  source: optionType[] | string | filterFunc;
+  options?:optionType[] // 可以是一个现成的数据，也可以是一个url地址，也可以是一个函数
 }
 
 
@@ -123,7 +127,7 @@ interface Props {
   noActionGroup?: boolean // 不启用操作组
   actionGroup?: actionOptionType[] // 操作数组
   noCheck?: boolean // 不能选择
-  filterGroup?:filterOptionType[] //过滤组
+  filterGroup?: filterOptionType[] //过滤组
 }
 
 const props = defineProps<Props>()
@@ -190,14 +194,17 @@ function actionMethod() {
 // 过滤组
 const filterGroup = ref<filterOptionType[]>([])
 
-async function initFilterGroup(){
+async function initFilterGroup() {
+
+  // 处理source的数据
   if (!props.filterGroup) return
   for (let i = 0; i < props.filterGroup.length; i++) {
     filterGroup.value.push({
-      label:props.filterGroup[i].label,
-      value:i,
-      column:props.filterGroup[i].column,
-      options:props.filterGroup[i].options,
+      label: props.filterGroup[i].label,
+      value: i,
+      column: props.filterGroup[i].column,
+      options: props.filterGroup[i].options,
+      source:props.filterGroup[i].source,
     })
   }
 }
@@ -260,8 +267,8 @@ const params = reactive<paramsType>({
 
 // 过滤失败了，好像不是role这个参数
 async function getList(p?: paramsType & any) {
-  if (p){
-    Object.assign(params,p)
+  if (p) {
+    Object.assign(params, p)
   }
   let res = await props.url(params)
   data.list = res.data.list

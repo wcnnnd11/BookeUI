@@ -23,6 +23,7 @@ import {userListApi} from "@/api/user_api";
 import type {userInfoType} from "@/api/user_api";
 import {ref} from "vue";
 import type {filterOptionType} from "@/components/admin/gvb_table.vue";
+import {roleIdListApi} from "@/api/role_api";
 
 const columns = [
   {title: '昵称', dataIndex: 'nick_name'},
@@ -40,22 +41,9 @@ const filterGroup: filterOptionType[] = ref([
     label: "想要什么？",
     value: 0,
     column: "role",
-    options: [
-      {
-        label: "管理员",
-        value: 1,
-      },
-      {
-        label: "普通用户",
-        value: 2,
-      },
-      {
-        label: "游客",
-        value: 3,
-      }
-    ]
+    source: roleIdListApi,
   }
-])
+])D
 
 
 const actionGroup: actionOptionType[] = [
