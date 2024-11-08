@@ -3,7 +3,6 @@
     <gvb_table :url="userListApi"
                :columns="columns"
                default-delete
-               no-check
                add-label="创建用户"
                :filter-group="filterGroup"
                @add="add"
@@ -13,10 +12,18 @@
       <template #avatar="{record}">
         <a-avatar :image-url="record.avatar"></a-avatar>
       </template>
+<!--      <template #action_middle="{record}">-->
+<!--        <a-button>测试位置{{ record.id }}</a-button>-->
+<!--      </template>-->
     </gvb_table>
   </div>
 </template>
 <script setup lang="ts">
+// no-confirm  关闭二次确认
+// no-check  关闭选择
+// no-add  关闭添加用户
+// no-edit 关闭编辑
+// no-delete  关闭删除
 
 import Gvb_table, {type actionOptionType} from "@/components/admin/gvb_table.vue";
 import {userListApi} from "@/api/user_api";
@@ -39,11 +46,10 @@ const columns = [
 const filterGroup: filterOptionType[] = ref([
   {
     label: "想要什么？",
-    value: 0,
     column: "role",
     source: roleIdListApi,
   }
-])D
+])
 
 
 const actionGroup: actionOptionType[] = [

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {useStore} from "@/stores";
 import {Message} from "@arco-design/web-vue";
+import type {optionType} from "@/types";
 
 export const useAxios = axios.create({
     baseURL: ""
@@ -53,4 +54,8 @@ export function defaultDeleteApi<T extends number | string>(url: string, idList:
             id_list: idList,
         }
     })
+}
+
+export function defaultOptionApi(url:string,params?:paramsType):Promise<baseResponse<optionType>> {
+    return useAxios.get(url,{params})
 }

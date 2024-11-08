@@ -3,7 +3,7 @@
 
     <div class="gvb_table_head">
 
-      <div class="action_create">
+      <div class="action_create" v-if="!props.noAdd">
         <a-button type="primary" @click="add">{{ addLabel }}</a-button>
       </div>
 
@@ -11,8 +11,13 @@
         <a-select placeholder="操作" style="width:120px" allow-clear
                   :options="actionOptions"
                   v-model="actionValue"></a-select>
-        <a-button type="primary" status="danger" v-if="actionValue !== undefined" @click="actionMethod">神雷诺，启动!
+        <a-popconfirm content="真的要消失吗?" v-if="!props.noConfirm" @ok="actionMethod">
+          <a-button type="primary" status="danger" v-if="actionValue !== undefined">神雷诺，启动!</a-button>
+        </a-popconfirm>
+        <a-button v-else type="primary" status="danger" v-if="actionValue !== undefined" @click="actionMethod">
+          神雷诺，启动!
         </a-button>
+
       </div>
 
       <div class="action_search">
@@ -42,49 +47,58 @@
 
     </div>
 
-    <div class="gvb_table_data">
-      <div class="gvb_table_source">
-        <a-table :row-key=rowKey :columns="props.columns" :data="data.list"
-                 :row-selection="props.noCheck ?  undefined: rowSelection"
-                 v-model:selectedKeys="selectedKeys" :pagination="false">
 
-          <template #columns>
-            <template v-for="item in props.columns">
-              <a-table-column v-if="item.render" :title="item.title as string">
-                <template #cell="data">
-                  <component :is="item.render(data) as Component"></component>
-                </template>
-              </a-table-column>
+      <a-spin class="gvb_table_data" :loading="isLoading" tip="正在发掘...">
+        <div>
+          <div class="gvb_table_source">
+            <a-table :row-key=rowKey :columns="props.columns" :data="data.list"
+                     :row-selection="props.noCheck ?  undefined: rowSelection"
+                     v-model:selectedKeys="selectedKeys" :pagination="false">
 
-              <a-table-column v-else-if="!item.slotName" :title="item.title as string"
-                              :data-index="item.dataIndex"></a-table-column>
-              <a-table-column :title="item.title as string" v-else>
-                <template #cell="{record}" v-if="item.slotName === 'action'">
-                  <div class="gvb_cell_actions">
-                    <a-button type="primary" @click="edit(record)">编辑</a-button>
-                    <a-popconfirm content="要消失吗?" @ok="remove(record)">
-                      <a-button status="danger" type="primary">删除</a-button>
-                    </a-popconfirm>
-                  </div>
-                </template>
-                <template #cell="{record}" v-else-if="item.slotName === 'created_at'">
-                  <span>{{ dateTimeFormat(record.created_at) }}</span>
-                </template>
+              <template #columns>
+                <template v-for="item in props.columns">
+                  <a-table-column v-if="item.render" :title="item.title as string">
+                    <template #cell="data">
+                      <component :is="item.render(data) as Component"></component>
+                    </template>
+                  </a-table-column>
 
-                <template v-else #cell="{record}">
-                  <slot :name="item.slotName" :record="record"></slot>
-                </template>
-              </a-table-column>
-            </template>
-          </template>
-        </a-table>
-      </div>
+                  <a-table-column v-else-if="!item.slotName" :title="item.title as string"
+                                  :data-index="item.dataIndex"></a-table-column>
+                  <a-table-column :title="item.title as string" v-else>
+                    <template #cell="{record}" v-if="item.slotName === 'action'">
+                      <div class="gvb_cell_actions">
+                        <slot name="action_left" :record="record"></slot>
+                        <a-button v-if="!props.noEdit" type="primary" @click="edit(record)">编辑</a-button>
+                        <slot name="action_middle" :record="record"></slot>
+                        <a-popconfirm v-if="!props.noDelete" content="要消失吗?" @ok="remove(record)">
+                          <a-button status="danger" type="primary">删除</a-button>
+                        </a-popconfirm>
+                        <slot name="action_right" :record="record"></slot>
 
-      <div class="gvb_table_page">
-        <a-pagination :total="data.count" @change="pageChange" v-model:current="params.page"
-                      :default-page-size="params.limit" show-total show-jumper/>
-      </div>
-    </div>
+                      </div>
+                    </template>
+                    <template #cell="{record}" v-else-if="item.slotName === 'created_at'">
+                      <span>{{ dateTimeFormat(record.created_at) }}</span>
+                    </template>
+
+                    <template v-else #cell="{record}">
+                      <slot :name="item.slotName" :record="record"></slot>
+                    </template>
+                  </a-table-column>
+                </template>
+              </template>
+            </a-table>
+          </div>
+          <div class="gvb_table_page">
+            <a-pagination :total="data.count" @change="pageChange" v-model:current="params.page"
+                          :default-page-size="params.limit" show-total show-jumper/>
+          </div>
+        </div>
+
+      </a-spin>
+
+
 
   </div>
 </template>
@@ -92,7 +106,7 @@
 <script setup lang="ts">
 import {IconRefresh} from "@arco-design/web-vue/es/icon";
 import {type Component, reactive, ref} from "vue";
-import type {baseResponse, listDataType} from "@/api";
+import {type baseResponse, defaultOptionApi, type listDataType} from "@/api";
 import type {paramsType} from "@/api";
 import {Message, type TableColumnData, type TableData, type TableRowSelection} from "@arco-design/web-vue";
 import {dateTimeFormat} from "@/utils/date";
@@ -113,7 +127,7 @@ export interface filterOptionType {
   value?: number;
   column: string;
   source: optionType[] | string | filterFunc;
-  options?:optionType[] // 可以是一个现成的数据，也可以是一个url地址，也可以是一个函数
+  options?: optionType[] // 可以是一个现成的数据，也可以是一个url地址，也可以是一个函数
 }
 
 
@@ -128,6 +142,10 @@ interface Props {
   actionGroup?: actionOptionType[] // 操作数组
   noCheck?: boolean // 不能选择
   filterGroup?: filterOptionType[] //过滤组
+  noConfirm?: boolean // 关闭二次确认
+  noAdd?: boolean // 没有添加
+  noEdit?: boolean // 没有编辑
+  noDelete?: boolean // 没有删除
 }
 
 const props = defineProps<Props>()
@@ -172,7 +190,7 @@ function actionMethod() {
   if (actionValue.value === 0) {
     // 批量删除
     if (selectedKeys.value.length === 0) {
-      Message.warning("请选择要删除的记录")
+      Message.warning("选择目标")
       return
     }
     removeIdData(selectedKeys.value)
@@ -196,15 +214,32 @@ const filterGroup = ref<filterOptionType[]>([])
 
 async function initFilterGroup() {
 
-  // 处理source的数据
+
   if (!props.filterGroup) return
   for (let i = 0; i < props.filterGroup.length; i++) {
+    // 处理source的数据
+    const item = props.filterGroup[i]
+    let source: optionType[] = []
+    switch (typeof item.source) {
+      case "function":
+        let res1 = await (item.source as filterFunc)()
+        source = res1.data
+        break
+      case "object":
+        source = (item.source as optionType[])
+        break
+      case "string":
+        // 请求接口
+        let res2 = await defaultOptionApi(item.source as string)
+        source = res2.data
+        break
+    }
     filterGroup.value.push({
-      label: props.filterGroup[i].label,
+      label: item.label,
       value: i,
-      column: props.filterGroup[i].column,
-      options: props.filterGroup[i].options,
-      source:props.filterGroup[i].source,
+      column: item.column,
+      options: source,
+      source: item.source,
     })
   }
 }
@@ -265,12 +300,16 @@ const params = reactive<paramsType>({
 })
 
 
+const isLoading = ref(false)
+
 // 过滤失败了，好像不是role这个参数
 async function getList(p?: paramsType & any) {
   if (p) {
     Object.assign(params, p)
   }
+  isLoading.value = true
   let res = await props.url(params)
+  isLoading.value = false
   data.list = res.data.list
   data.count = res.data.count
 }
@@ -342,6 +381,7 @@ getList()
   }
 
   .gvb_table_data {
+    width: 100%;
     padding: 20px 20px 20px 20px;
 
     .gvb_table_source {
