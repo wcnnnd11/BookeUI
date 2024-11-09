@@ -4,6 +4,7 @@
   <div class="gvb_login_mask">
     <div class="gvb_display_windows">
       <div class="gvb_display_image">
+        <login_display></login_display>
       </div>
     </div>
     <div class="gvb_login_windows">
@@ -19,18 +20,18 @@ import {useRoute} from "vue-router";
 import {qqLoginApi} from "@/api/user_api";
 import {Message} from "@arco-design/web-vue";
 import {useStore} from "@/stores";
+import login_display from "@/global/login_display.vue";
+
+
 
 interface routerQuery {
   flag?: string
   code?: string
 }
-
 interface historyState {
   back: string
 }
 const back = (window.history.state as historyState).back
-
-
 const store = useStore();
 const route = useRoute();
 
@@ -43,7 +44,6 @@ function ok() {
   }
   router.push(back)
 }
-
 async function init(query: routerQuery) {
   if (!query.code || !query.flag) {
     return
@@ -115,11 +115,13 @@ init(route.query)
       width: 97.5%;
       position: absolute;
       border-radius: 2.5%;
-
       background-image: url("/image/login.png");
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
     }
 
@@ -142,9 +144,6 @@ init(route.query)
     .arco-form-item-message {
       color: #0707e3;
     }
-
   }
-
-
 }
 </style>
