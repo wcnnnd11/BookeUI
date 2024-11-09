@@ -1,36 +1,63 @@
 <template>
   <div>
+    <user_create v-model:visible="visible" @ok="createOk"></user_create>
+    <a-modal title="编辑用户" v-model:visible="updateVisible" :on-before-ok="updateUserOk">
+      <a-form ref="formRef" :model="updateUserForm">
+        <a-form-item field="nick_name" label="昵称"
+                     :rules="[{required:true,message:'请输入昵称'}]"
+                     :validate-trigger="['blur']"
+        >
+          <a-input v-model="updateUserForm.nick_name" placeholder="昵称"></a-input>
+        </a-form-item>
+        <a-form-item field="role" label="权限">
+          <a-select v-model="updateUserForm.role" :options="roleOptions" placeholder="选择角色"></a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
     <gvb_table :url="userListApi"
                :columns="columns"
                default-delete
-               add-label="创建用户"
+               add-label="蜀将何在？"
+               ref="gvbTable"
                :filter-group="filterGroup"
-               @add="add"
+               search-placeholder="找到朋友名字或者昵称"
+               @add="visible=true"
                @edit="edit"
                :action-group="actionGroup"
                @remove="remove">
       <template #avatar="{record}">
         <a-avatar :image-url="record.avatar"></a-avatar>
       </template>
-<!--      <template #action_middle="{record}">-->
-<!--        <a-button>测试位置{{ record.id }}</a-button>-->
-<!--      </template>-->
+      <template #ip="{record}:{record:userInfoType}">
+        <span>{{ record.ip }} ({{ record.addr }})</span>
+      </template>
+      <!--      <template #action_middle="{record}">-->
+      <!--        <a-button>测试位置{{ record.id }}</a-button>-->
+      <!--      </template>-->
     </gvb_table>
   </div>
 </template>
+<!-- no-confirm  关闭二次确认-->
+<!-- no-check  关闭选择-->
+<!-- no-add  关闭添加用户-->
+<!-- no-edit 关闭-->
+<!-- no-delete  关闭删除-->
 <script setup lang="ts">
-// no-confirm  关闭二次确认
-// no-check  关闭选择
-// no-add  关闭添加用户
-// no-edit 关闭编辑
-// no-delete  关闭删除
+
 
 import Gvb_table, {type actionOptionType} from "@/components/admin/gvb_table.vue";
 import {userListApi} from "@/api/user_api";
 import type {userInfoType} from "@/api/user_api";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import type {filterOptionType} from "@/components/admin/gvb_table.vue";
 import {roleIdListApi} from "@/api/role_api";
+import {RecordType} from "@/components/admin/gvb_table.vue";
+import User_create from "@/components/admin/user_create.vue";
+import type {userUpdateRequest} from "@/api";
+import {roleOptions} from "@/global/global";
+import {userUpdateApi} from "@/api";
+import {Message} from "@arco-design/web-vue";
+
 
 const columns = [
   {title: '昵称', dataIndex: 'nick_name'},
@@ -50,8 +77,6 @@ const filterGroup: filterOptionType[] = ref([
     source: roleIdListApi,
   }
 ])
-
-
 const actionGroup: actionOptionType[] = [
   {
     label: "战吼：没想好",
@@ -61,18 +86,43 @@ const actionGroup: actionOptionType[] = [
   }
 ]
 
+const visible = ref(false)
 
-function add() {
-  console.log("add")
+function createOk() {
+  gvbTable.value.getList()
 }
 
-function edit(record: userInfoType) {
-  console.log(record)
 
+const gvbTable = ref()
+const updateVisible = ref(false)
+const updateUserForm = reactive<userUpdateRequest>({
+  nick_name: "",
+  role: 0,
+  user_id: 0
+})
+
+function edit(record: RecordType<userInfoType>): void {
+  updateUserForm.user_id = record.id
+  updateUserForm.role = record.role_id
+  updateUserForm.nick_name = record.nick_name
+  updateVisible.value = true
 }
 
-function remove(idList: number[]) {
-  console.log(idList)
+const formRef = ref()
 
+async function updateUserOk() {
+  let val = await formRef.value.validate()
+  if (val) return false
+
+  let res = await userUpdateApi(updateUserForm)
+  if (res.code) {
+    Message.error(res.msg)
+    return
+  }
+  Message.success(res.msg)
+  gvbTable.value.getList()
+  return true
 }
+
+
 </script>

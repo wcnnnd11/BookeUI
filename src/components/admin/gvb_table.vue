@@ -21,8 +21,13 @@
       </div>
 
       <div class="action_search">
-        <a-input-search placeholder="搜索" v-model="params.key" @keydown.enter="search"
-                        @search="search"></a-input-search>
+        <a-input-search
+            :placeholder="searchPlaceholder"
+            v-model="params.key"
+            @keydown.enter="search"
+            @search="search">
+
+        </a-input-search>
       </div>
 
       <slot name="action_other_search"></slot>
@@ -48,56 +53,55 @@
     </div>
 
 
-      <a-spin class="gvb_table_data" :loading="isLoading" tip="正在发掘...">
-        <div>
-          <div class="gvb_table_source">
-            <a-table :row-key=rowKey :columns="props.columns" :data="data.list"
-                     :row-selection="props.noCheck ?  undefined: rowSelection"
-                     v-model:selectedKeys="selectedKeys" :pagination="false">
+    <a-spin class="gvb_table_data" :loading="isLoading" tip="正在发掘...">
+      <div>
+        <div class="gvb_table_source">
+          <a-table :row-key=rowKey :columns="props.columns" :data="data.list"
+                   :row-selection="props.noCheck ?  undefined: rowSelection"
+                   v-model:selectedKeys="selectedKeys" :pagination="false">
 
-              <template #columns>
-                <template v-for="item in props.columns">
-                  <a-table-column v-if="item.render" :title="item.title as string">
-                    <template #cell="data">
-                      <component :is="item.render(data) as Component"></component>
-                    </template>
-                  </a-table-column>
+            <template #columns>
+              <template v-for="item in props.columns">
+                <a-table-column v-if="item.render" :title="item.title as string">
+                  <template #cell="data">
+                    <component :is="item.render(data) as Component"></component>
+                  </template>
+                </a-table-column>
 
-                  <a-table-column v-else-if="!item.slotName" :title="item.title as string"
-                                  :data-index="item.dataIndex"></a-table-column>
-                  <a-table-column :title="item.title as string" v-else>
-                    <template #cell="{record}" v-if="item.slotName === 'action'">
-                      <div class="gvb_cell_actions">
-                        <slot name="action_left" :record="record"></slot>
-                        <a-button v-if="!props.noEdit" type="primary" @click="edit(record)">编辑</a-button>
-                        <slot name="action_middle" :record="record"></slot>
-                        <a-popconfirm v-if="!props.noDelete" content="要消失吗?" @ok="remove(record)">
-                          <a-button status="danger" type="primary">删除</a-button>
-                        </a-popconfirm>
-                        <slot name="action_right" :record="record"></slot>
+                <a-table-column v-else-if="!item.slotName" :title="item.title as string"
+                                :data-index="item.dataIndex"></a-table-column>
+                <a-table-column :title="item.title as string" v-else>
+                  <template #cell="{record}" v-if="item.slotName === 'action'">
+                    <div class="gvb_cell_actions">
+                      <slot name="action_left" :record="record"></slot>
+                      <a-button v-if="!props.noEdit" type="primary" @click="edit(record)">编辑</a-button>
+                      <slot name="action_middle" :record="record"></slot>
+                      <a-popconfirm v-if="!props.noDelete" content="要消失吗?" @ok="remove(record)">
+                        <a-button status="danger" type="primary">删除</a-button>
+                      </a-popconfirm>
+                      <slot name="action_right" :record="record"></slot>
 
-                      </div>
-                    </template>
-                    <template #cell="{record}" v-else-if="item.slotName === 'created_at'">
-                      <span>{{ dateTimeFormat(record.created_at) }}</span>
-                    </template>
+                    </div>
+                  </template>
+                  <template #cell="{record}" v-else-if="item.slotName === 'created_at'">
+                    <span>{{ dateTimeFormat(record.created_at) }}</span>
+                  </template>
 
-                    <template v-else #cell="{record}">
-                      <slot :name="item.slotName" :record="record"></slot>
-                    </template>
-                  </a-table-column>
-                </template>
+                  <template v-else #cell="{record}">
+                    <slot :name="item.slotName" :record="record"></slot>
+                  </template>
+                </a-table-column>
               </template>
-            </a-table>
-          </div>
-          <div class="gvb_table_page">
-            <a-pagination :total="data.count" @change="pageChange" v-model:current="params.page"
-                          :default-page-size="params.limit" show-total show-jumper/>
-          </div>
+            </template>
+          </a-table>
         </div>
+        <div class="gvb_table_page">
+          <a-pagination :total="data.count" @change="pageChange" v-model:current="params.page"
+                        :default-page-size="params.limit" show-total show-jumper/>
+        </div>
+      </div>
 
-      </a-spin>
-
+    </a-spin>
 
 
   </div>
@@ -146,6 +150,8 @@ interface Props {
   noAdd?: boolean // 没有添加
   noEdit?: boolean // 没有编辑
   noDelete?: boolean // 没有删除
+  searchPlaceholder?: string//模糊匹配的提示词
+  defaultParams?: paramsType&any // 默认第一次查询参数
 }
 
 const props = defineProps<Props>()
@@ -154,10 +160,18 @@ const {
   limit = 10,
   rowKey = "id",
   addLabel = "添加",
+  searchPlaceholder = "挖掘"
 } = props
 
-const emits = defineEmits(["add", "edit", "remove"])
+export type RecordType <T> = T &{
 
+}
+
+const emits = defineEmits<{
+  (e: "add"): void // 添加的事件
+  (e: "edit", record: RecordType<any>): void// 编辑的事件
+  (e: "remove", idList: (number | string)[]): void// 删除的事件，单删，批量删除
+}>()
 
 const selectedKeys = ref<number[] | string[]>([]);
 const rowSelection = reactive<TableRowSelection>({
@@ -256,14 +270,15 @@ function add() {
   emits("add")
 }
 
-function edit(record: TableData) {
+function edit(record: RecordType<any>) {
   emits("edit", record);
 }
 
+// 从列表里面匹配路径
 const urlRegex = /return useAxios.get\("(.*?)",.*?\)/
 
-
-async function remove(record: TableData) {
+// 删除单个
+async function remove(record:  RecordType<any>) {
   let id = record[rowKey]
   removeIdData([id])
 }
@@ -331,7 +346,11 @@ function flush() {
   getList()
 }
 
-getList()
+getList(props.defaultParams)
+
+defineExpose({
+  getList
+})
 
 
 </script>

@@ -56,6 +56,28 @@ export function defaultDeleteApi<T extends number | string>(url: string, idList:
     })
 }
 
-export function defaultOptionApi(url:string,params?:paramsType):Promise<baseResponse<optionType>> {
-    return useAxios.get(url,{params})
+export function defaultOptionApi(url: string, params?: paramsType): Promise<baseResponse<optionType>> {
+    return useAxios.get(url, {params})
+}
+
+export interface userCreateRequest {
+    nick_name: string
+    password: string
+    role: number
+    user_name: string
+}
+
+export function userCreateApi(data: userCreateRequest): Promise<baseResponse<string>> {
+    return useAxios.post("/api/users", data)
+}
+
+export interface userUpdateRequest {
+    role: number,
+    nick_name: string,
+    user_id: number,
+}
+
+export function userUpdateApi(data:userUpdateRequest):Promise<baseResponse<string>>{
+    return useAxios.put("/api/user_role", data)
+
 }
