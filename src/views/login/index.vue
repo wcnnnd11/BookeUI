@@ -20,7 +20,7 @@ import {useRoute} from "vue-router";
 import {qqLoginApi} from "@/api/user_api";
 import {Message} from "@arco-design/web-vue";
 import {useStore} from "@/stores";
-import login_display from "@/global/login_display.vue";
+import login_display from "../../../public/code/login_display.vue";
 
 
 

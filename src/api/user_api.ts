@@ -33,7 +33,7 @@ export interface userInfoType{
     addr:string,
     token:string
     ip:string,
-    role:string,
+    role_id:number,
     sign_status:string,
     integral:number,  //积分
     sign:string,  //slogan

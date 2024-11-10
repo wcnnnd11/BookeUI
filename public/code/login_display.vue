@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "LoginDisplay",
@@ -28,7 +28,7 @@ export default defineComponent({
       "To reap what I don't sow"
     ];
 
-    return { lyrics };
+    return {lyrics};
   },
 });
 </script>
@@ -63,7 +63,7 @@ export default defineComponent({
 
   .song-info {
     position: absolute;
-    bottom: 20px;  /* 增加底部间距，确保与底部有一定距离 */
+    bottom: 20px; /* 增加底部间距，确保与底部有一定距离 */
     right: 10px;
     color: white;
     text-align: right;

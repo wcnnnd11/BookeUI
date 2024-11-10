@@ -95,7 +95,7 @@
             </template>
           </a-table>
         </div>
-        <div class="gvb_table_page">
+        <div class="gvb_table_page" v-if="!props.noPage">
           <a-pagination :total="data.count" @change="pageChange" v-model:current="params.page"
                         :default-page-size="params.limit" show-total show-jumper/>
         </div>
@@ -152,6 +152,7 @@ interface Props {
   noDelete?: boolean // 没有删除
   searchPlaceholder?: string//模糊匹配的提示词
   defaultParams?: paramsType&any // 默认第一次查询参数
+  noPage?:boolean // 不要分页
 }
 
 const props = defineProps<Props>()

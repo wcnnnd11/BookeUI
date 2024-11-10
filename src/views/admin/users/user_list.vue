@@ -23,8 +23,7 @@
                search-placeholder="找到朋友名字或者昵称"
                @add="visible=true"
                @edit="edit"
-               :action-group="actionGroup"
-               @remove="remove">
+               :action-group="actionGroup">
       <template #avatar="{record}">
         <a-avatar :image-url="record.avatar"></a-avatar>
       </template>
@@ -43,15 +42,13 @@
 <!-- no-edit 关闭-->
 <!-- no-delete  关闭删除-->
 <script setup lang="ts">
-
-
 import Gvb_table, {type actionOptionType} from "@/components/admin/gvb_table.vue";
 import {userListApi} from "@/api/user_api";
 import type {userInfoType} from "@/api/user_api";
 import {reactive, ref} from "vue";
 import type {filterOptionType} from "@/components/admin/gvb_table.vue";
 import {roleIdListApi} from "@/api/role_api";
-import {RecordType} from "@/components/admin/gvb_table.vue";
+import type {RecordType} from "@/components/admin/gvb_table.vue";
 import User_create from "@/components/admin/user_create.vue";
 import type {userUpdateRequest} from "@/api";
 import {roleOptions} from "@/global/global";
