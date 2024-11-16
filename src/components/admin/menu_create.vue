@@ -77,7 +77,8 @@ const imageIdList = ref<imageIdType[]>([])
 
 async function getList() {
   let res = await imageIdListApi()
-  imageIdList.value = res.data
+  imageIdList.value = Array.isArray(res.data) ? res.data : [res.data];
+
 }
 
 getList()
@@ -129,7 +130,7 @@ async function okHandler() {
     })
   }
   form.image_sort_list = imageSortIdList
-  let res: baseResponse<string> = {}
+  let res: baseResponse<string> = { code: 0, data: "", msg: "" };
   if (editId.value) {
     res = await menuUpdateApi(editId.value, form)
   } else {

@@ -67,7 +67,7 @@ const columns = [
   {title: '操作', slotName: 'action'},
 ]
 
-const filterGroup: filterOptionType[] = ref([
+const filterGroup = ref<filterOptionType[]>([
   {
     label: "想要什么？",
     column: "role",

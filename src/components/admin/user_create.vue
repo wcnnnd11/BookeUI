@@ -35,9 +35,10 @@
 </template>
 <script setup lang="ts">
 import {reactive, ref} from "vue";
-import {userCreateRequest} from "@/api";
+import type {userCreateRequest} from "@/api";
 import {userCreateApi} from "@/api";
 import {Message} from "@arco-design/web-vue";
+import {roleOptions} from "@/global/global";
 
 
 const props = defineProps({

@@ -246,7 +246,7 @@ async function initFilterGroup() {
       case "string":
         // 请求接口
         let res2 = await defaultOptionApi(item.source as string)
-        source = res2.data
+        source = Array.isArray(res2.data) ? res2.data : [res2.data];
         break
     }
     filterGroup.value.push({
