@@ -150,6 +150,56 @@ const router = createRouter({
                                 title: "系统日志",
                             },
                             component: () => import('../views/admin/system/log_list.vue'),
+                        },
+                        {
+                            path: "system",
+                            name: "system_system",
+                            meta: {
+                                title: "系统配置",
+                            },
+                            component: () => import('../views/admin/system/system.vue'),
+                            children:[
+                                {
+                                    path:"site",
+                                    name:"site_config",
+                                    meta:{
+                                        title:"网站配置"
+                                    },
+                                    component: () => import('../views/admin/system/config/site_config.vue'),
+                                },
+                                {
+                                    path:"site",
+                                    name:"email_config",
+                                    meta:{
+                                        title:"邮箱设置"
+                                    },
+                                    component: () => import('../views/admin/system/config/email_config.vue'),
+                                },
+                                {
+                                    path:"site",
+                                    name:"qiniu_config",
+                                    meta:{
+                                        title:"七牛云设置"
+                                    },
+                                    component: () => import('../views/admin/system/config/qiniu_config.vue'),
+                                },
+                                {
+                                    path:"site",
+                                    name:"qq_config",
+                                    meta:{
+                                        title:"QQ设置"
+                                    },
+                                    component: () => import('../views/admin/system/config/qq_config.vue'),
+                                },{
+                                    path:"site",
+                                    name:"jwt_config",
+                                    meta:{
+                                        title:"jwt设置"
+                                    },
+                                    component: () => import('../views/admin/system/config/jwt_config.vue'),
+                                }
+
+                            ]
                         }
 
                     ]

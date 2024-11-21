@@ -1,7 +1,7 @@
 <template>
   <div class="gvb_upload_image">
     <div class="line">
-      <a-input placeholder="图片链接" v-model="text"></a-input>
+      <a-input :placeholder="props.placeholder" v-model="text"></a-input>
       <a-upload @success="imageSuccessEvent" :show-file-list="false" action="/api/image" name="image"
                 :headers="headers"/>
     </div>
@@ -23,7 +23,12 @@ const headers = {
 
 const props = defineProps({
   modelValue: {
-    type: String
+    type: String,
+  },
+  placeholder:{
+    type:String,
+    default:"图片链接"
+
   }
 })
 

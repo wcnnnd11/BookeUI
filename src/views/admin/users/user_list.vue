@@ -17,7 +17,7 @@
     <gvb_table :url="userListApi"
                :columns="columns"
                default-delete
-               add-label="蜀将何在？"
+               add-label="φ(*￣0￣)？"
                ref="gvbTable"
                :filter-group="filterGroup"
                search-placeholder="找到朋友名字或者昵称"

@@ -80,6 +80,7 @@ const menuList: MenuType[] = [
       {title: "菜单列表", icon: IconUser, name: "menu_list"},
       {title: "广告列表", icon: IconUser, name: "promotion_list"},
       {title: "系统日志", icon: IconUser, name: "log_list"},
+      {title: "系统配置", icon: IconUser, name: "system_system"},
 
     ]
   },

@@ -6,7 +6,7 @@
         :url="promotionListApi"
         :columns="columns"
         default-delete
-        add-label="创建广告"
+        add-label="φ(*￣0￣)"
         no-confirm
         ref="gvbTable"
         @add="add"

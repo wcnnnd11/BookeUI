@@ -5,7 +5,7 @@
         :url="menuListApi"
         :columns="columns"
         default-delete
-        add-label="创建菜单"
+        add-label="φ(*￣0￣)"
         no-confirm
         ref="gvbTable"
         no-page
