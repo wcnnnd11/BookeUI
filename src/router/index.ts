@@ -158,43 +158,43 @@ const router = createRouter({
                                 title: "系统配置",
                             },
                             component: () => import('../views/admin/system/system.vue'),
-                            children:[
+                            children: [
                                 {
-                                    path:"site",
-                                    name:"site_config",
-                                    meta:{
-                                        title:"网站配置"
+                                    path: "site",
+                                    name: "site_config",
+                                    meta: {
+                                        title: "网站配置"
                                     },
                                     component: () => import('../views/admin/system/config/site_config.vue'),
                                 },
                                 {
-                                    path:"site",
-                                    name:"email_config",
-                                    meta:{
-                                        title:"邮箱设置"
+                                    path: "site",
+                                    name: "email_config",
+                                    meta: {
+                                        title: "邮箱设置"
                                     },
                                     component: () => import('../views/admin/system/config/email_config.vue'),
                                 },
                                 {
-                                    path:"site",
-                                    name:"qiniu_config",
-                                    meta:{
-                                        title:"七牛云设置"
+                                    path: "site",
+                                    name: "qiniu_config",
+                                    meta: {
+                                        title: "七牛云设置"
                                     },
                                     component: () => import('../views/admin/system/config/qiniu_config.vue'),
                                 },
                                 {
-                                    path:"site",
-                                    name:"qq_config",
-                                    meta:{
-                                        title:"QQ设置"
+                                    path: "site",
+                                    name: "qq_config",
+                                    meta: {
+                                        title: "QQ设置"
                                     },
                                     component: () => import('../views/admin/system/config/qq_config.vue'),
-                                },{
-                                    path:"site",
-                                    name:"jwt_config",
-                                    meta:{
-                                        title:"jwt设置"
+                                }, {
+                                    path: "site",
+                                    name: "jwt_config",
+                                    meta: {
+                                        title: "jwt设置"
                                     },
                                     component: () => import('../views/admin/system/config/jwt_config.vue'),
                                 }
@@ -227,13 +227,13 @@ router.beforeEach((to, from, next) => {
     isTourist 游客能看，管理员也能看
      */
     //如果我是普通用户，那我就不能访问admin或者游客权限的页面
-    if (store.userInfo.role===2 && (meta.isAdmin || meta.isTourist)){
+    if (store.userInfo.role === 2 && (meta.isAdmin || meta.isTourist)) {
         Message.warning("权限不足1")
-                router.push({name: from.name as string})
-                return
+        router.push({name: from.name as string})
+        return
     }
     //如果我是游客，那我就不能访问游客权限为false的
-    if (store.isAdmin && meta.isTourist){
+    if (store.isAdmin && meta.isTourist) {
         Message.warning("权限不足2")
         router.push({name: from.name as string})
         return

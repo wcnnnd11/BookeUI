@@ -1,6 +1,5 @@
 import type {baseResponse, listDataType, paramsType} from "@/api/index";
 import {useAxios} from "@/api/index";
-import type {B} from "mockjs";
 
 export interface promotionType {
     created_at?: string
