@@ -84,6 +84,9 @@ import {logReadApi} from "@/api/log_api";
 import {createApp} from "vue";
 import {dateFormat} from "@/utils/date";
 import {dateTimeFormat} from "@/utils/date";
+import VueJsonPretty from 'vue-json-pretty';
+import 'vue-json-pretty/lib/styles.css';
+import {nextTick} from "vue";
 
 
 const gvbTable = ref()
@@ -178,7 +181,6 @@ const columnDict = {
   ]
 }
 
-
 function getList() {
   // 这里的status类型为   status?: boolean | ""  // true  成功  false 失败
   if (params.status === "") {
@@ -187,17 +189,10 @@ function getList() {
   gvbTable.value.getList(params)
 }
 
-
 const columns = ref(columnDict[params.type as keyof typeof columnDict])
 
 const logContent = ref("")
 const visible = ref(false)
-
-
-import VueJsonPretty from 'vue-json-pretty';
-import 'vue-json-pretty/lib/styles.css';
-import {nextTick} from "vue";
-
 
 async function readLog(record: logType) {
   if (!record.readStatus) {
@@ -224,7 +219,6 @@ function jsonPreview() {
     app.mount(value)
   })
 }
-
 
 function selectDropDown(val: string, column: "userName" | "addr" | "date") {
   if (column === "date") {
