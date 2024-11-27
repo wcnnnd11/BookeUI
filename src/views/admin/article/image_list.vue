@@ -34,7 +34,9 @@
           <a-button type="primary">
             <template #icon>
               <IconDownload></IconDownload>
-            </template>图片下载</a-button>
+            </template>
+            图片下载
+          </a-button>
         </a>
       </template>
     </gvb_table>
@@ -55,7 +57,8 @@ import {IconDownload} from "@arco-design/web-vue/es/icon";
 const columns = [
   {title: '文件名', dataIndex: 'name'},
   {
-    title: '上传类型', dataIndex: 'image_type', render: ({record}: { record: imageType }) => {
+    title: '上传类型', dataIndex: 'image_type', render: (data: any) => {
+      const record = data.record as imageType
       let color = "red"
       if (record.image_type === "本地") {
         color = "blue"
@@ -102,11 +105,11 @@ function imageUploadSuccessEvent(fileItem: FileItem) {
 
 </script>
 <style lang="scss">
-  .gvb_image_upload {
-    .arco-upload-list-picture {
-      width: inherit;
-    }
-
+.gvb_image_upload {
+  .arco-upload-list-picture {
+    width: inherit;
   }
+
+}
 
 </style>

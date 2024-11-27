@@ -12,9 +12,11 @@
                   :options="actionOptions"
                   v-model="actionValue"></a-select>
         <a-popconfirm content="真的要消失吗?" v-if="!props.noConfirm" @ok="actionMethod">
-          <a-button type="primary" status="danger" v-if="actionValue !== undefined">神雷诺，启动!</a-button>
+          <a-button type="primary" status="danger" v-if="actionValue !== undefined && actionValue !== ''">神雷诺，启动!
+          </a-button>
         </a-popconfirm>
-        <a-button v-else type="primary" status="danger" v-if="actionValue !== undefined" @click="actionMethod">
+        <a-button v-else type="primary" status="danger" v-if="actionValue !== undefined && actionValue !== ''"
+                  @click="actionMethod">
           神雷诺，启动!
         </a-button>
 
@@ -125,7 +127,6 @@ export interface actionOptionType {
 
 type filterFunc = (params?: paramsType) => Promise<baseResponse<optionType[]>>
 
-
 export interface filterOptionType {
   label: string;
   value?: number;
@@ -133,7 +134,6 @@ export interface filterOptionType {
   source: optionType[] | string | filterFunc;
   options?: optionType[] // 可以是一个现成的数据，也可以是一个url地址，也可以是一个函数
 }
-
 
 interface Props {
   url: (params: paramsType) => Promise<baseResponse<listDataType<any>>>
@@ -151,8 +151,9 @@ interface Props {
   noEdit?: boolean // 没有编辑
   noDelete?: boolean // 没有删除
   searchPlaceholder?: string//模糊匹配的提示词
-  defaultParams?: paramsType&any // 默认第一次查询参数
-  noPage?:boolean // 不要分页
+  defaultParams?: paramsType & any // 默认第一次查询参数
+  noPage?: boolean // 不要分页
+
 }
 
 const props = defineProps<Props>()
@@ -164,9 +165,7 @@ const {
   searchPlaceholder = "挖掘"
 } = props
 
-export type RecordType <T> = T &{
-
-}
+export type RecordType<T> = T & {}
 
 const emits = defineEmits<{
   (e: "add"): void // 添加的事件
@@ -198,9 +197,13 @@ function initActionGroup() {
 }
 
 initActionGroup()
-const actionValue = ref<number | undefined>(undefined)
+const actionValue = ref<number | undefined | "">(undefined)
 
 function actionMethod() {
+
+  if (actionValue.value === "") {
+    return;
+  }
   // 判断是不是1
   if (actionValue.value === 0) {
     // 批量删除
@@ -279,11 +282,12 @@ function edit(record: RecordType<any>) {
 const urlRegex = /return useAxios.get\("(.*?)",.*?\)/
 
 // 删除单个
-async function remove(record:  RecordType<any>) {
+async function remove(record: RecordType<any>) {
   let id = record[rowKey]
   removeIdData([id])
 }
 
+// 批量删除
 async function removeIdData(idList: (number | string)[]) {
   if (props.defaultDelete) {
     let regexResult = urlRegex.exec(props.url.toString())
@@ -296,7 +300,8 @@ async function removeIdData(idList: (number | string)[]) {
       return
     }
     Message.success(res.msg)
-    flush()
+    selectedKeys.value = []
+    getList()
     return;
   }
   emits("remove", idList)
@@ -327,7 +332,7 @@ async function getList(p?: paramsType & any) {
   let res = await props.url(params)
   isLoading.value = false
 
-  if (res.code){
+  if (res.code) {
     Message.error(res.msg)
     return
   }
@@ -354,12 +359,10 @@ function flush() {
 
 getList(props.defaultParams)
 
-function clearData(){
+function clearData() {
   data.list = []
   data.count = 0
 }
-
-
 
 
 defineExpose({

@@ -30,3 +30,39 @@ export interface imagesUploadResponse {
     msg: string
 
 }
+
+
+export function uploadImageApi(file: File): Promise<baseResponse<string>> {
+    return new Promise((resolve, reject) => {
+        const form = new FormData();
+        form.set("image", file);
+
+        useAxios
+            .post<baseResponse<string>>("/api/image", form, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then((res) => resolve(res.data)) // 直接传递符合类型的数据
+            .catch((err) => reject(err));
+    });
+}
+
+/*
+存在一点问题，使用另一种写法
+ */
+/*
+
+export function uploadImageApi(file: File): Promise<baseResponse<string>> {
+    return new Promise((resolve, reject) => {
+        const form = new FormData()
+        form.set("image", file)
+        useAxios.post("/api/image", form, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(res => resolve(res)).catch(err => reject(err))
+    })
+}
+
+ */
