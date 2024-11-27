@@ -88,7 +88,6 @@ import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import {nextTick} from "vue";
 
-
 const gvbTable = ref()
 
 const params = reactive<logRequest>({
@@ -190,7 +189,6 @@ function getList() {
 }
 
 const columns = ref(columnDict[params.type as keyof typeof columnDict])
-
 const logContent = ref("")
 const visible = ref(false)
 

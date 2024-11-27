@@ -178,9 +178,13 @@ async function messageUserCheck(data: messageType) {
             content: "";
             display: block;
             position: absolute;
-            left: -32px;
+            //left: -32px;
+            //top: 6px;
+            //border-width: 10px 20px;
+            left:-19.5px;
             top: 6px;
-            border-width: 10px 20px;
+            border-width: 5px 10px;
+
             border-style: solid;
             border-color: transparent var(--color-fill-2) transparent transparent;
           }
@@ -205,10 +209,10 @@ async function messageUserCheck(data: messageType) {
               content: "";
               display: block;
               position: absolute;
-              right: -32px;
+              right: -20px;
               left: inherit;
               top: 6px;
-              border-width: 10px 20px;
+              border-width: 5px 10px;
               border-style: solid;
               border-color: transparent transparent transparent var(--color-fill-2);
             }

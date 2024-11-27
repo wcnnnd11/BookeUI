@@ -1,7 +1,6 @@
 <template>
   <div class="promotion_list_view">
     <promotion_create v-model:visible="visible" :record="recordData" @ok="gvbTable.getList()"></promotion_create>
-
     <gvb_table
         :url="promotionListApi"
         :columns="columns"

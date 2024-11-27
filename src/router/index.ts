@@ -76,7 +76,16 @@ const router = createRouter({
                                 title: "文章列表",
                             },
                             component: () => import('../views/admin/article/article_list.vue'),
+                        },
+                        {
+                            path: "image_list",
+                            name: "image_list",
+                            meta: {
+                                title: "图片列表",
+                            },
+                            component: () => import('../views/admin/article/image_list.vue'),
                         }
+
                     ]
                 },
                 {
@@ -229,7 +238,6 @@ router.beforeEach((to, from, next) => {
         router.push({name: from.name as string})
         return
     }
-
     /*
     isLogin 登录了就能看
     isAdmin 管理员能看
@@ -241,7 +249,7 @@ router.beforeEach((to, from, next) => {
         router.push({name: from.name as string})
         return
     }
-    //如果我是游客，那我就不能访问游客权限为false的
+    // 如果我是游客，那我就不能访问游客权限为false的
     if (store.isAdmin && meta.isTourist) {
         Message.warning("权限不足2")
         router.push({name: from.name as string})

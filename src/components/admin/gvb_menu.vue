@@ -63,6 +63,7 @@ const menuList: MenuType[] = [
   {
     title: "文章管理", icon: IconUser, name: "article", child: [
       {title: "文章列表", icon: IconUser, name: "article_list"},
+      {title: "图片列表", icon: IconUser, name: "image_list"},
     ]
   },
   {

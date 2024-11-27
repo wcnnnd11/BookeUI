@@ -38,11 +38,9 @@ import {IconHome, IconDown,} from '@arco-design/web-vue/es/icon';
 import {useStore} from "@/stores";
 import Gvb_user_info_menu from "@/components/common/gvb_user_info_menu.vue";
 
-
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
-
 function goIndex() {
   router.push({
     name: "index"

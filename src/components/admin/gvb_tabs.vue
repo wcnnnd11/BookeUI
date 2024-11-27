@@ -31,11 +31,11 @@ import type {tabType} from "@/types";
 方案1
 教程的系统，大部分还是4个字的，所以直接用总宽度除以90，向下取整
 */
-const slidesPerView = ref(12)
-onMounted(()=>{
-  let mySwiper = (document.querySelector(".mySwiper")as Element)
-  slidesPerView.value=Math.round(mySwiper.clientWidth / 90)
-})
+// const slidesPerView = ref(12)
+// onMounted(()=>{
+//   let mySwiper = (document.querySelector(".mySwiper")as Element)
+//   slidesPerView.value=Math.round(mySwiper.clientWidth / 90)
+// })
 
 
 /*方案2
@@ -45,13 +45,21 @@ onMounted(()=>{
 从前往后加，如果超过了总宽度，那个时候的个数，就是实际显示的个数
 const slidesPerView = ref(12)
 */
-/*
+const slidesPerView = ref(12)
 onMounted(() => {
   // 总宽度
-  let mySwiperWith = document.querySelector(".mySwiper").clientWidth
+  let mySwiper = (document.querySelector(".mySwiper") as Element)
+  let mySwiperWidth = 1200
+  if (mySwiper != null) {
+    mySwiperWidth = mySwiper.clientWidth;
+  }
   // 实际宽度
-  let actualWidth = document.querySelector(".swiper-wrapper").scrollWidth
-  if (actualWidth <= mySwiperWith) {
+  let actual = (document.querySelector(".swiper-wrapper") as Element)
+  let actualWidth = 1200
+  if (mySwiper != null) {
+    actualWidth = actual.scrollWidth;
+  }
+  if (actualWidth <= mySwiperWidth) {
     return
   }
   let swiperSlideList = document.querySelectorAll(".swiper-wrapper .swiper-slide")
@@ -61,20 +69,17 @@ onMounted(() => {
 
   for (const slide of swiperSlideList) {
     sum += slide.clientWidth
-    if (sum > mySwiperWith) {
+    if (sum > mySwiperWidth) {
       break
     }
     count++
   }
-  slidesPerView.value = count
+  // slidesPerView.value = count
 })
-*/
-
 
 
 const route = useRoute()
 const router = useRouter()
-
 
 
 const tabList: Ref<tabType[]> = ref([

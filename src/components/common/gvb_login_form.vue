@@ -55,7 +55,6 @@ async function loginEmail() {
   if (val) {
     return
   }
-
   let res = await loginEmailApi(form)
   if (res.code) {
     Message.error(res.msg)
@@ -65,29 +64,23 @@ async function loginEmail() {
   store.setToken(res.data)
   emits("ok")
 }
-
 const store = useStore()
-
 const form = reactive<loginEmailType>({
   user_name: "",
   password: "",
 })
-
 function formReset() {
   formRef.value.resetFields(Object.keys(form))
   formRef.value.clearValidate(Object.keys(form))
 }
-
 defineExpose({
   formReset
 })
-
 const props = defineProps({
   qqRedirectPath: {
     type: String,
   }
 })
-
 //回调地址有问题，先放着
 async function qqLogin() {
   let res = await loginQQPathApi()
@@ -99,7 +92,6 @@ async function qqLogin() {
     Message.warning("未配置qq登录")
     return
   }
-
   // 存一下我当前点登录的路径
   // 判断是不是login页面来的
   let path = route.path
@@ -107,9 +99,7 @@ async function qqLogin() {
     path = props.qqRedirectPath
   }
   localStorage.setItem("redirectPath", path)
-
   window.open(res.data, "_self")
-
 }
 
 </script>
@@ -151,9 +141,7 @@ async function qqLogin() {
         background-color: var(--color-text-4);
       }
     }
-
     .icons {
-
       display: flex;
       justify-content: center;
       margin-top: 10px;
@@ -163,8 +151,6 @@ async function qqLogin() {
         width: 30px;
       }
     }
-
-
   }
 }
 </style>

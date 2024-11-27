@@ -11,7 +11,6 @@
       <gvb_login_form @ok="ok" :qq-redirect-path="back"></gvb_login_form>
     </div>
   </div>
-
 </template>
 <script setup lang="ts">
 import Gvb_login_form from "@/components/common/gvb_login_form.vue";
@@ -21,8 +20,6 @@ import {qqLoginApi} from "@/api/user_api";
 import {Message} from "@arco-design/web-vue";
 import {useStore} from "@/stores";
 import login_display from "../../../public/code/login_display.vue";
-
-
 
 interface routerQuery {
   flag?: string

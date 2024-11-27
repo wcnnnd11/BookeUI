@@ -14,8 +14,6 @@
 import type {helpType} from "@/api/settings_api";
 import Gvb_title from "@/components/common/gvb_title.vue";
 
-
-
 interface Props {
   helpTitle?: string
   data?: helpType[]
@@ -25,7 +23,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const {helpTitle = "帮助"} = props
-
 
 </script>
 <style lang="scss">

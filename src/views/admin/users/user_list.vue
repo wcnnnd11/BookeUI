@@ -55,7 +55,6 @@ import {roleOptions} from "@/global/global";
 import {userUpdateApi} from "@/api";
 import {Message} from "@arco-design/web-vue";
 
-
 const columns = [
   {title: '昵称', dataIndex: 'nick_name'},
   {title: '用户名', dataIndex: 'user_name'},
@@ -66,7 +65,6 @@ const columns = [
   {title: '注册时间', slotName: 'created_at'},
   {title: '操作', slotName: 'action'},
 ]
-
 const filterGroup = ref<filterOptionType[]>([
   {
     label: "想要什么？",
@@ -88,7 +86,6 @@ const visible = ref(false)
 function createOk() {
   gvbTable.value.getList()
 }
-
 
 const gvbTable = ref()
 const updateVisible = ref(false)
