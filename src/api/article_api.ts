@@ -1,5 +1,8 @@
 import {type baseResponse, type listDataType, type paramsType, useAxios} from "@/api/index";
 import type {optionType} from "@/types";
+import {cacheRequest} from "@/api/index";
+
+
 
 export interface articleType {
     abstract: string
@@ -56,9 +59,12 @@ export function articleListApi(params: paramsType): Promise<baseResponse<listDat
     return useAxios.get("/api/articles", {params: params})
 }
 
-export function articleCategoryListApi(): Promise<baseResponse<optionType[]>> {
-    return useAxios.get("/api/categorys")
-}
+
+// export function articleCategoryListApi(): Promise<baseResponse<optionType[]>> {
+//     return useAxios.get("/api/categorys")
+// }
+
+export const articleCategoryListApi: () => Promise<baseResponse<optionType[]>> = cacheRequest(() => useAxios.get("/api/categorys"))
 
 export interface articleUpdateType {
     abstract?: string
@@ -77,12 +83,18 @@ export interface articleUpdateType {
 export function articleUpdateApi(data: articleUpdateType): Promise<baseResponse<string>> {
     return useAxios.put("/api/articles", data)
 }
+
 export function articleCreateApi(data: articleUpdateType): Promise<baseResponse<string>> {
     return useAxios.post("/api/articles", data)
 }
 
 
 // 接口不对，后端没写
-export function articleContentApi(id:string): Promise<baseResponse<string>> {
-    return useAxios.get("/api/articles/content/"+id)
+export function articleContentApi(id: string): Promise<baseResponse<string>> {
+    return useAxios.get("/api/articles/content/" + id)
 }
+
+export function articleCollectsApi(params: paramsType): Promise<baseResponse<listDataType<any>>> {
+    return useAxios.get("/api/articles/collects", {params:params})
+}
+

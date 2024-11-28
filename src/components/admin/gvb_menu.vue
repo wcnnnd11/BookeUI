@@ -58,6 +58,9 @@ const menuList: MenuType[] = [
   {
     title: "个人中心", icon: IconUser, name: "user_center", child: [
       {title: "我的信息", icon: IconUser, name: "user_info"},
+      {title: "我的发布", icon: IconUser, name: "user_add_article"},
+      {title: "我的收藏", icon: IconUser, name: "collects"},
+      {title: "我的消息", icon: IconUser, name: "messages"},
     ]
   },
   {

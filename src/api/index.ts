@@ -2,6 +2,7 @@ import axios from "axios";
 import {useStore} from "@/stores";
 import {Message} from "@arco-design/web-vue";
 import type {optionType} from "@/types";
+import type {userUpdateRequest} from "@/api/user_api";
 
 export const useAxios = axios.create({
     baseURL: ""
@@ -71,13 +72,38 @@ export function userCreateApi(data: userCreateRequest): Promise<baseResponse<str
     return useAxios.post("/api/users", data)
 }
 
-export interface userUpdateRequest {
-    role: number,
-    nick_name: string,
-    user_id: number,
-}
+
 
 export function userUpdateApi(data:userUpdateRequest):Promise<baseResponse<string>>{
     return useAxios.put("/api/user_role", data)
 
 }
+
+export function cacheRequest<T>(func: () => Promise<T>): () => Promise<T> {
+    let lastRequestTime: number = 0; // 存储上次请求的时间戳
+    let cacheData: T | null = null; // 上次缓存的数据
+    let currentRequest: Promise<T> | null = null;
+
+    return function () {
+        const currentTime = Date.now();
+        const timeDiff = currentTime - lastRequestTime;
+
+        if (timeDiff < 1000 && cacheData) {
+            return Promise.resolve(cacheData); // 直接返回缓存数据
+        }
+
+        // 没有缓存数据或者时间超过1s,就发起新的请求
+        if (!currentRequest) {
+            currentRequest = func().then((res: T) => {
+                // 更新之前的数据，时间
+                lastRequestTime = currentTime;
+                cacheData = res;
+                currentRequest = null; // 重置当前请求
+                return res;
+            });
+        }
+
+        return currentRequest; // 始终返回一个 Promise
+    };
+}
+
