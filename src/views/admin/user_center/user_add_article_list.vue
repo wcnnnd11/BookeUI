@@ -1,6 +1,6 @@
 <template>
   <div class="article_list_view">
-    <Gvb_article_list></Gvb_article_list>
+    <Gvb_article_list is-user></Gvb_article_list>
   </div>
 </template>
 
