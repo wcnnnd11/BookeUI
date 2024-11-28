@@ -14,6 +14,7 @@
         </a-form-item>
       </a-form>
     </a-modal>
+    <gvb_message_record_modal :visible="messageVisible" :userID="userID"></gvb_message_record_modal>
     <gvb_table :url="userListApi"
                :columns="columns"
                default-delete
@@ -25,7 +26,7 @@
                @edit="edit"
                :action-group="actionGroup">
       <template #avatar="{record}">
-        <a-avatar :image-url="record.avatar"></a-avatar>
+        <a-avatar @click="checkMessage(record)" :image-url="record.avatar"></a-avatar>
       </template>
       <template #ip="{record}:{record:userInfoType}">
         <span>{{ record.ip }} ({{ record.addr }})</span>
@@ -54,6 +55,7 @@ import type {userUpdateRequest} from "@/api";
 import {roleOptions} from "@/global/global";
 import {userUpdateApi} from "@/api";
 import {Message} from "@arco-design/web-vue";
+import Gvb_message_record_modal from "@/components/common/gvb_message_record_modal.vue";
 
 const columns = [
   {title: '昵称', dataIndex: 'nick_name'},
@@ -116,6 +118,14 @@ async function updateUserOk() {
   Message.success(res.msg)
   gvbTable.value.getList()
   return true
+}
+
+const messageVisible= ref(false)
+const userID = ref(0)
+
+function checkMessage(record:userInfoType){
+  messageVisible.value = true
+  userID.value = record.id
 }
 
 
