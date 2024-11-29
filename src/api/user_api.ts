@@ -70,6 +70,7 @@ export interface userInfoUpdateType {
     link: string
     nick_name: string
     sign: string
+    avatar: string
 }
 
 export function userInfoUpdateApi(data: userInfoUpdateType): Promise<baseResponse<string>> {

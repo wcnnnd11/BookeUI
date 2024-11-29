@@ -51,7 +51,7 @@ import type {filterOptionType} from "@/components/admin/gvb_table.vue";
 import {roleIdListApi} from "@/api/role_api";
 import type {RecordType} from "@/components/admin/gvb_table.vue";
 import User_create from "@/components/admin/user_create.vue";
-import type {userUpdateRequest} from "@/api";
+import type {userUpdateRequest} from "@/api/user_api";
 import {roleOptions} from "@/global/global";
 import {userUpdateApi} from "@/api";
 import {Message} from "@arco-design/web-vue";
