@@ -133,6 +133,9 @@ export const useStore = defineStore('counter', {
         isAdmin(): boolean {
             return this.userInfo.role == 1
         },
+        isGeneral(): boolean {
+            return this.userInfo.role == 2
+        },
         //判断是不是游客
         isTourist(): boolean {
             return this.userInfo.role == 3

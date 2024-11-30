@@ -51,6 +51,7 @@ export interface userRecordRequestType extends paramsType {
 export function messageUserMeRecordApi(params: userRecordRequestType): Promise<baseResponse<listDataType<messageRecordType>>> {
     return useAxios.get("/api/messages_users/record/me", {params})
 }
+
 // 先添加了send_user_id，还在排查问题中 ***
 export interface messagePublishType {
     content: string
@@ -61,5 +62,10 @@ export interface messagePublishType {
 // 发送消息
 export function messagePublishApi(data: messagePublishType): Promise<baseResponse<string>> {
     return useAxios.post("/api/messages", data)
+
+}
+
+export function messageRemoveApi(id_list: number[]): Promise<baseResponse<string>> {
+    return useAxios.delete("/api/messages_users", {data: {id_list}})
 
 }
