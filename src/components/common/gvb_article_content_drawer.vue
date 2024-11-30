@@ -15,15 +15,14 @@
 </template>
 <script setup lang="ts">
 import {MdEditor} from "md-editor-v3";
-import {reactive, ref, watch} from "vue";
+import {reactive, watch} from "vue";
 import 'md-editor-v3/lib/style.css';
-import {uploadImageApi} from "@/api/image_api";
-import type {baseResponse} from "@/api";
 import {Message} from "@arco-design/web-vue";
 import {useStore} from "@/stores";
 import type {articleUpdateType} from "@/api/article_api";
 import {articleUpdateApi} from "@/api/article_api";
 import {articleContentApi} from "@/api/article_api";
+import {onUploadImg} from "@/api/image_api";
 
 const store = useStore()
 
@@ -39,26 +38,6 @@ const data = reactive<articleUpdateType>({
 const props = defineProps<Props>()
 const emits = defineEmits(["update:visible", "ok"])
 
-async function onUploadImg(files: Array<File>, callback: (urls: Array<string>) => void): Promise<void> {
-  let resList: baseResponse<string>[] = []
-
-  try {
-    resList = await Promise.all(files.map(file => uploadImageApi(file)))
-  } catch (e) {
-    // Message.error(e.message)
-    return
-  }
-
-  const urlList: string[] = []
-  resList.forEach(res => {
-    if (res.code) {
-      Message.error(res.msg)
-      return
-    }
-    urlList.push(res.data)
-  })
-  callback(urlList)
-}
 
 async function updateArticle() {
   if (data.content === "") {

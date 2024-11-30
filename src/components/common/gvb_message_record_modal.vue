@@ -1,7 +1,14 @@
 <template>
   <div>
-    <a-modal title="聊天" width="40%" :visible="props.visible" :footer="false" body-class="gvb_message_record_modal_body" @cancel="close">
-      <gvb_message_record :userID="props.userID"></gvb_message_record>
+    <a-modal
+        title="聊天"
+        width="40%"
+        :visible="props.visible"
+        :footer="false"
+        body-class="gvb_message_record_modal_body"
+        @cancel="close"
+    >
+      <gvb_message_record :userID="props.userID" ></gvb_message_record>
     </a-modal>
   </div>
 </template>
@@ -14,16 +21,17 @@ interface Props {
   userID: number
 }
 
-const props = defineProps<Props>()
-const emits = defineEmits(["update:visible"])
+const props = defineProps<Props>();
+const emits = defineEmits(["update:visible"]);
 
 function close() {
-  emits("update:visible", false)
+  // 确保发出事件时父组件能够正确响应
+  emits("update:visible", false);
 }
 </script>
 
 <style lang="scss">
-.gvb_message_record_modal_body{
+.gvb_message_record_modal_body {
   padding: 0;
 }
 </style>
