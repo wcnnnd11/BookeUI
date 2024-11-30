@@ -14,7 +14,7 @@
         </a-form-item>
       </a-form>
     </a-modal>
-    <gvb_message_record_modal :visible="messageVisible" :userID="userID"></gvb_message_record_modal>
+    <gvb_message_record_modal v-model:visible="messageVisible" :userID="userID"></gvb_message_record_modal>
     <gvb_table :url="userListApi"
                :columns="columns"
                default-delete
