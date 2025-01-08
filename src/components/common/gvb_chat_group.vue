@@ -6,7 +6,6 @@
         <div class="title">
           {{ config.welcomeTitle }}
         </div>
-
         <div class="outline">
           在线人数：{{ config.isOnlinePeople ? chatData.onlineCount : '∞' }}
         </div>
@@ -14,24 +13,20 @@
         <div class="manage">
           <IconRefresh style="cursor: pointer" @click="flush"></IconRefresh>
           <a-checkbox v-model="isManage">管理模式</a-checkbox>
-          <a-button v-if="selectIDList.length && isManage"
+          <a-button v-if="isManage"
                     size="mini" type="primary"
                     status="danger"
                     style="margin-left: 10px"
                     @click="removeChatGroup">删除
           </a-button>
         </div>
-
       </div>
-
       <div class="record_list">
-        <a-checkbox-group :v-model="selectIDList">
-          <template v-for="item in chatRecordData.list">
+        <a-checkbox-group :v-model="selectIDList" @change="handleChange">
+          <template v-for="item in chatRecordData.list" >
             <div :class="{msg:true,isManage:isManage}">
               <a-checkbox :value="item.id" v-if="isManage"></a-checkbox>
-              <div class="date" v-if="config.isShowTime">
-                {{ dateTimeFormat(item.created_at) }}
-              </div>
+              <div class="date" v-if="config.isShowTime">{{ dateTimeFormat(item.created_at) }}</div>
               <div v-if="item.msg_type === 2" :class="{message: true, isMe: item.isMe}">
                 <img class="avatar" :src="'/'+item.avatar" alt="">
                 <div class="message-main">
@@ -54,12 +49,9 @@
                    :class="'system '+'system_'+item.msg_type.toString() ">
                 <div class="txt-message">{{ item.content }}</div>
               </div>
-
             </div>
-
           </template>
         </a-checkbox-group>
-
       </div>
 
       <div class="footer">
@@ -107,6 +99,13 @@ import {dateTimeFormat} from "@/utils/date";
 import {MdEditor, MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import {onUploadImg} from "@/api/image_api";
+
+
+// 数组的值一直空的，改成手动更新，可以解决这个问题，添加如下代码
+function handleChange(selectedValues: number[]) {
+  console.log("手动更新选中值：", selectedValues)
+  selectIDList.value = selectedValues
+}
 
 
 const params = reactive<paramsType>({
@@ -165,6 +164,12 @@ async function flush() {
 }
 
 async function removeChatGroup() {
+  //加一个判断，删除的数组不为空
+  if (selectIDList.value.length === 0) {
+    Message.warning("请先选择要删除的记录")
+    return
+  }
+
   let res = await chatRemoveApi(selectIDList.value)
   if (res.code) {
     Message.error(res.msg)
@@ -239,7 +244,15 @@ function websocketConnect() {
   // 连接成功之后的回调
   socket.value.onopen = function (ev) {
     Message.success("成功进入聊天室")
+    // 发送进入聊天室的消息
+    socket.value?.send(
+        JSON.stringify({
+          content: "", // 进入聊天室不需要内容
+          msg_type: 1, // 消息类型为 1（InRoomMsg）
+        })
+    )
   }
+
   // 错误
   socket.value.onerror = function (ev) {
     Message.error("进入聊天室失败")

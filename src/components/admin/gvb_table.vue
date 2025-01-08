@@ -279,7 +279,8 @@ function edit(record: RecordType<any>) {
 }
 
 // 从列表里面匹配路径
-const urlRegex = /return useAxios.get\("(.*?)",.*?\)/
+// const urlRegex = /return useAxios.get\("(.*?)",.*?\)/; 原先的正则表达式不能够用于复杂内容（如广告的api），修改如下，更长，更强！
+const urlRegex = /return\s+useAxios\.get\("([^"]+)",\s*\{[\s\S]*?params[\s\S]*?\}/m;
 
 // 删除单个
 async function remove(record: RecordType<any>) {
@@ -289,7 +290,9 @@ async function remove(record: RecordType<any>) {
 
 // 批量删除
 async function removeIdData(idList: (number | string)[]) {
+
   if (props.defaultDelete) {
+
     let regexResult = urlRegex.exec(props.url.toString())
     if (regexResult === null || regexResult.length !== 2) {
       return

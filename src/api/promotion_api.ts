@@ -1,5 +1,6 @@
 import type {baseResponse, listDataType, paramsType} from "@/api/index";
 import {useAxios} from "@/api/index";
+import {data} from "@arco-design/web-react/es/Table/__test__/common/data";
 
 export interface promotionType {
     created_at?: string
@@ -13,7 +14,8 @@ export interface promotionType {
 
 export function promotionListApi(params: paramsType): Promise<baseResponse<listDataType<promotionType>>> {
     return useAxios.get("/api/adverts", {
-        params: params, headers: {
+        params: params,
+        headers: {
             "Gvb_referer": location.pathname,
         }
     })
@@ -40,6 +42,13 @@ export function promotionCreateApi(data: promotionCreateType): Promise<baseRespo
 export function promotionUpdateApi(id: number, data: promotionCreateType): Promise<baseResponse<string>> {
     return useAxios.put("/api/adverts/" + id.toString(), data)
 }
+
+export function promotionRemoveApi(id_list: number[]): Promise<baseResponse<string>> {
+    return useAxios.delete("/api/adverts/" , {data: {id_list}})
+}
+
+
+
 
 
 

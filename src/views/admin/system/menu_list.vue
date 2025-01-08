@@ -1,8 +1,7 @@
 <template>
   <div class="menu_list_view">
     <menu_create v-model:visible="visible" @ok="gvbTable.getList()" :record="recordData"></menu_create>
-    <gvb_table
-        :url="menuListApi"
+    <gvb_table :url="menuListApi"
         :columns="columns"
         default-delete
         add-label="φ(*￣0￣)"

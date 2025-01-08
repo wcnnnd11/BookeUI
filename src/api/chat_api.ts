@@ -11,7 +11,6 @@ export interface chatType {
     is_group?: boolean
     msg_type: number // 1系统消息-进入聊天室 2文本消息 0?:7系统消息-离开聊天室
     nick_name: string
-
     isMe: boolean
 }
 

@@ -32,6 +32,11 @@ import {reactive, ref} from "vue";
 import {defaultPromotionForm, type promotionCreateType, promotionListApi} from "@/api/promotion_api";
 import type {promotionType} from "@/api/promotion_api";
 import Promotion_create from "@/components/admin/promotion_create.vue";
+import {promotionRemoveApi} from "@/api/promotion_api";
+import {Message} from "@arco-design/web-vue";
+
+
+// 广告的默认删除正则有问题，改成使用一个专用的
 
 const gvbTable = ref()
 
@@ -40,7 +45,7 @@ const columns = [
   {title: '标题', dataIndex: 'title'},
   {title: '图片', slotName: 'images'},
   {title: '链接', slotName: 'href'},
-  {title: '是否显示', slotName: 'is_show'},
+  {title: '显示', slotName: 'is_show'},
   {title: '更新时间', slotName: 'created_at'},
   {title: '操作', slotName: 'action'},
 ]

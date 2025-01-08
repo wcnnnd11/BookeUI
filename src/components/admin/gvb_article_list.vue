@@ -47,7 +47,7 @@
         <div class="article_title_col" v-html="record.title"></div>
       </template>
       <template #action_middle="{record}:{record: articleType}">
-        <a-button type="outline" @click="editArticleContent(record)">编辑正文（会死机，别点）</a-button>
+        <a-button type="outline" @click="WarningMsg">编辑正文</a-button>
       </template>
     </gvb_table>
   </div>
@@ -66,6 +66,7 @@ import 'md-editor-v3/lib/style.css'
 import Gvb_article_drawer from "@/components/common/gvb_article_drawer.vue";
 import Gvb_article_content_drawer from "@/components/common/gvb_article_content_drawer.vue";
 import type {paramsType} from "@/api";
+import {Message} from "@arco-design/web-vue";
 
 interface Props {
   is_user: boolean
@@ -111,6 +112,12 @@ const updateVisible = ref(false)
 const articleContentVisible = ref(false)
 const articleUpdateId = ref<string | undefined>(undefined)
 
+// 编辑正文有问题，先warning
+function WarningMsg() {
+  Message.warning("存在未知问题（可能是包没适配好），该功能目前不可使用")
+}
+
+// 原line:50的@click调用，先改成warning
 function editArticleContent(record: articleType) {
   articleContentVisible.value = true
   articleUpdateId.value = record.id

@@ -1,132 +1,57 @@
 <template>
-  <div class="comment_list_view">
-
-    <div class="article">
-
-      <div class="head">
-        <a-input-search placeholder="搜索文章标题"></a-input-search>
-      </div>
-      <div class="article_list">
-        <div :class="{item: true, active: articleID === item.id}" @click="checkItem(item)"
-             v-for="item in articleList.list">
-          <div class="title">
-            <a-typography-paragraph
-                :ellipsis="{
-                  rows: 1,
-                  showTooltip: true,
-                  css: true,
-                }"
-            >{{ item.title }}
-            </a-typography-paragraph>
-          </div>
-          <div class="count">{{ item.count }}</div>
-          <div class="action">
-            <IconDelete></IconDelete>
-          </div>
-        </div>
-      </div>
-      <div class="page">
-        <a-pagination simple :total="articleList.count"></a-pagination>
-      </div>
-    </div>
-    <div class="comment">
-      <gvb_comment_list :article-id="articleID"></gvb_comment_list>
+  <div class="maintenance-page">
+    <div class="content">
+      <img src="E:\NewIT\gvb_study\gvb_web_ts\public\image\头像.png" alt="页面建设中" class="image" style="border-radius: 5px" />
+      <h1>页面建设中</h1>
+      <p>正在努力开发中o((>ω< ))o</p>
+      <a-button type="primary" @click="goBack">返回首页</a-button>
     </div>
   </div>
-
 </template>
 
-<script setup lang="ts">
-import {reactive} from "vue";
-import type {listDataType, paramsType} from "@/api";
-import type {commentArticleType} from "@/api/comment_api";
-import {ref} from "vue";
-import {IconDelete} from "@arco-design/web-vue/es/icon";
-import {commentArticleListApi} from "@/api/comment_api";
-import Gvb_comment_list from "@/components/common/gvb_comment_list.vue";
-
-const articleID = ref<string>("")
-
-const articleList = reactive<listDataType<commentArticleType>>({
-  list: [],
-  count: 0,
-})
-
-const articleParams = reactive<paramsType>({})
-
-async function getArticleList() {
-  let res = await commentArticleListApi(articleParams)
-  articleList.list = res.data.list
-  articleList.count = res.data.count
-}
-
-getArticleList()
-
-function checkItem(record: commentArticleType) {
-  articleID.value = record.id
-}
-
-
+<script>
+export default {
+  name: "MaintenancePage",
+  methods: {
+    goBack() {
+      this.$router.push("/admin"); // 跳转到 admin/index.vue 页面
+    },
+  },
+};
 </script>
-<style lang="scss">
-.comment_list_view {
+
+<style scoped>
+.maintenance-page {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f5f5f5;
+}
 
-  > div {
-    background-color: var(--color-bg-1);
-    height: calc(100vh - 130px);
-    border-radius: 5px;
-    color: var(--color-text-2);
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
+.content {
+  max-width: 600px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-  .article {
-    width: 280px;
-    padding: 20px;
-    position: relative;
+.image {
+  width: 200px;
+  margin-bottom: 20px;
+}
 
-    .head {
-      margin-bottom: 10px;
-    }
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
 
-    .page {
-      display: flex;
-      justify-content: center;
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .item {
-      width: 100%;
-      height: 60px;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-
-      .title {
-        width: 8rem;
-
-        .arco-typography {
-          margin-bottom: 0;
-        }
-      }
-
-      &.active {
-        background-color: var(--color-fill-2);
-        border-radius: 5px;
-      }
-    }
-  }
-
-
-  .comment {
-    width: calc(100% - 300px);
-    margin-left: 20px;
-  }
+p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
 }
 </style>
