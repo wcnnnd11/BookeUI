@@ -1,12 +1,12 @@
 <template>
   <div>
     <a-modal
-        width="30%"
+        width="isLaptops1 ? '40%':'30%'"
         :title="title"
         modal-class="gvb_article_modal_body"
         :visible="props.visible" @cancel="emits('update:visible', false)"
         :on-before-ok="okHandler">
-      <a-form ref="formRef" :model="form" :label-col-props="{span:4}" :wrapper-col-props="{span: 20}">
+      <a-form ref="formRef" :model="form" :label-col-props="{span:isLaptops1?5:4}" :wrapper-col-props="{span:isLaptops1?19:20}">
         <a-form-item field="title" label="文章标题" :rules="[{required:true,message:'请输入文章标题'}]"
                      :validate-trigger="['blur']">
           <a-input v-model="form.title" placeholder="文章标题"></a-input>
@@ -28,7 +28,7 @@
               </div>
             </a-option>
             <template #label="{ data }">
-              <img :src="coverSrc(data.value).value" style="height: 30px; border-radius: 5px"/>
+              <img :src="coverSrc(data.value).value" style="height: 30px; border-radius: 5px" alt="封面"/>
               <span style="margin-left: 10px">{{ data.label }}</span>
             </template>
           </a-select>
@@ -61,6 +61,7 @@ import Gvb_article_item from "@/components/common/gvb_article_item.vue";
 import {Random} from "mockjs";
 import {computed} from "vue";
 
+const isLaptops1 = isLaptops
 
 const categoryOptions = ref<optionType[]>([])
 const tagOptions = ref<optionType[]>([])

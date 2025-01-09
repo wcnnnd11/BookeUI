@@ -343,7 +343,15 @@ function logTypeChange() {
       }
     }
   }
-}
 
+}
+.isLaptops{
+  .search_date{
+    display: none;
+  }
+  .search_addr{
+    display: none;
+  }
+}
 
 </style>

@@ -10,11 +10,12 @@
 <script setup lang="ts">
 import Gvb_message_record from "@/components/common/gvb_message_record.vue";
 import Gvb_message_list from "@/components/common/gvb_message_list.vue";
-import {reactive, ref, watch} from "vue";
+import {reactive, ref} from "vue";
 import {type messageType, messageUserListByMeApi} from "@/api/message_api";
 import type {listDataType} from "@/api";
 import router from "@/router";
 import {useRoute} from "vue-router";
+
 
 
 const route = useRoute()

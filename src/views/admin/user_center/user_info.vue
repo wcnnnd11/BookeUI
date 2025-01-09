@@ -10,7 +10,7 @@
                    :preview-width="clipperData.previewWidth"
                    @confirm="onConfirm"/>
       <gvb_title title="用户信息"></gvb_title>
-      <a-form ref="formRef" :model="form" :label-col-props="{span:4}" :wrapper-col-props="{span:20}">
+      <a-form ref="formRef" :model="form" :label-col-props="{span:isLaptops1? 6:4}" :wrapper-col-props="{span:isLaptops1? 18:20}">
         <a-form-item label="用户名">
           <span>{{ form.user_name }}</span>
         </a-form-item>
@@ -86,6 +86,7 @@ import Gvb_cropper from "@/components/common/gvb_cropper.vue";
 import Gvb_user_info_preview from "@/components/common/gvb_user_info_preview.vue";
 import { Random } from "mockjs";
 
+const isLaptops1 = isLaptops
 
 //定义interface类型
 interface IClipper {

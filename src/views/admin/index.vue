@@ -4,7 +4,7 @@
       <Gvb_logo></Gvb_logo>
       <Gvb_menu></Gvb_menu>
     </aside>
-    <main>
+    <main :class="{isLaptops: isLaptops1}">
       <div class="gvb_head">
         <Gvb_bread_crumb></Gvb_bread_crumb>
         <div class="gvb_function_area">
@@ -30,17 +30,18 @@ import Gvb_menu from "@/components/admin/gvb_menu.vue";
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
 import Gvb_logo from "@/components/admin/gvb_logo.vue";
 import Gvb_theme from "@/components/common/gvb_theme.vue";
-import type {Component} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {IconMenu, IconUser} from "@arco-design/web-vue/es/icon";
 import Gvb_tabs from "@/components/admin/gvb_tabs.vue";
-import {IconHome, IconDown,} from '@arco-design/web-vue/es/icon';
+import {IconHome} from '@arco-design/web-vue/es/icon';
 import {useStore} from "@/stores";
 import Gvb_user_info_menu from "@/components/common/gvb_user_info_menu.vue";
+
+const isLaptops1 = isLaptops
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+
 function goIndex() {
   router.push({
     name: "index"

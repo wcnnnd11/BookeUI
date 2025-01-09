@@ -1,8 +1,8 @@
 <template>
   <Gvb_config title="QQ配置"
               name="qq"
-              :left-width="45"
-              :right-with="55"
+              :left-width="isLaptops1 ? 55:45"
+              :right-with="isLaptops1 ? 45:55"
               :label-span="4"
               :wrapper-span="20"
               :column="column"
@@ -19,6 +19,8 @@
 import Gvb_config from "@/components/admin/gvb_config.vue";
 import type {configColumnType} from "@/types";
 import type {qqType} from "@/api/settings_api";
+
+const isLaptops1 = isLaptops
 
 const column:configColumnType<qqType>[] = [
   {label: "appID", field: "app_id", rules: [{required: true, message: '请输入appID'}], placeholder: "appID"},

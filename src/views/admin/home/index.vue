@@ -3,7 +3,7 @@
     <div class="welcome">
       <div class="title">
         早安，{{ store.userInfo.nick_name }}<br>
-        这里还要修改，样式想改成动态的
+        今天有什么想做的吗？
       </div>
       <div class="weather"></div>
       <div class="statistics">
@@ -44,7 +44,6 @@
     <div class="main">
       <div class="left">
         <gvb_card title="快捷入口" class="quick_entry">
-
           <div class="item" v-for="item in quickEntryList"
                :style="{'--icon_bg':item.bg,'--icon_color':item.color}">
             <div class="icon" @click="goLink(item)">
@@ -53,7 +52,6 @@
             <div class="text">{{ item.text }}</div>
 
           </div>
-
         </gvb_card>
         <gvb_card class="statistics" title=数据统计>
           <login_data_charts></login_data_charts>
@@ -127,7 +125,7 @@ let quickEntryList: quickEntryType[] = [
   {
     bg: "#d2ecff",
     color: "#69c0ff",
-    font: IconSettings,
+    font: IconBulb,
     text: "日志列表",
     name: "log_list",
   },
@@ -145,8 +143,14 @@ let quickEntryList: quickEntryType[] = [
     text: "用户列表",
     name: "user_list",
   },
+  {
+    bg: "#d2ecff",
+    color: "#69c0ff",
+    font: IconSettings,
+    text: "系统管理",
+    name: "site_config",
+  },
 ]
-
 
 if (store.isGeneral || store.isTourist) {
   quickEntryList = [
@@ -180,10 +184,45 @@ interface updateLogType {
 
 const updateLogList: updateLogType[] = [
   {
-    title: "刷友好度规划",
-    created_at: "2023-10-05 00:00:00"
-
+    title: "已知bug修复",
+    created_at: "2024-10-05 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2024-10-15 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2024-11-25 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2024-11-05 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2024-11-15 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2024-11-25 00:00:00"
+  },{
+    title: "已知bug修复",
+    created_at: "2024-12-05 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2024-12-15 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2024-12-25 00:00:00"
+  },
+  {
+    title: "已知bug修复",
+    created_at: "2025-1-05 00:00:00"
   }
+
 ]
 
 
@@ -193,10 +232,10 @@ const updateLogList: updateLogType[] = [
 .home_view {
   .welcome {
     width: 100%;
-    background-image: url("/");
+    background-image: url("public/image/动漫人物.png");
     background-repeat: no-repeat;
     background-position: right;
-    background-color: var(--color-bg-1);
+    background-color: var(--color-bg-2);
     padding: 10px 0 30px 20px;
     border-bottom: 5px;
     background-size: 20%;

@@ -1,8 +1,8 @@
 <template>
   <Gvb_config title="邮箱配置"
               name="email"
-              :left-width="37"
-              :right-with="63"
+              :left-width="isLaptops1 ? 47:37"
+              :right-with="isLaptops1 ? 53:63"
               :column="column"
               :help-data="helpList">
     <template #alert>
@@ -17,6 +17,7 @@ import Gvb_config from "@/components/admin/gvb_config.vue";
 import type {configColumnType} from "@/types";
 import type {emailType} from "@/api/settings_api";
 
+const isLaptops1 = isLaptops
 
 const column: configColumnType<emailType>[] = [
   {label: "邮箱域名", field: "host", rules: [{required: true, message: '请输入邮箱域名'}]},

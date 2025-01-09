@@ -1,5 +1,5 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import {createApp} from 'vue'
+import {createPinia} from 'pinia'
 import "@/assets/base.css"
 import "@/assets/theme.css"
 import ArcoVue from '@arco-design/web-vue';
@@ -12,6 +12,8 @@ import "font-awesome/css/font-awesome.min.css"
 const app = createApp(App)
 app.use(ArcoVue)
 app.use(createPinia())
-app.use(router)
+app.use(router);
+
+(window as any).isLaptops = document.documentElement.clientWidth > 1200 &&  document.documentElement.clientWidth< 1800
 
 app.mount('#app')

@@ -1,8 +1,8 @@
 <template>
   <Gvb_config title="jwt配置"
               name="jwt"
-              :left-width="40"
-              :right-with="60"
+              :left-width="isLaptops1 ? 50:40"
+              :right-with="isLaptops1 ? 50:60"
               :column="column"
               :help-data="helpList">
 
@@ -12,6 +12,8 @@
 import Gvb_config from "@/components/admin/gvb_config.vue";
 import type {configColumnType} from "@/types";
 import type {jwtType} from "@/api/settings_api";
+
+const isLaptops1 = isLaptops
 
 const column: configColumnType<jwtType>[] = [
   {label: "秘钥", field: "secret", iptType: "password", rules: [{required: true, message: '请输入密钥'}]},
