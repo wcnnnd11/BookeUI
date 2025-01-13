@@ -25,7 +25,7 @@ export function siteInfoApi(): Promise<baseResponse<listDataType<siteInfoType>>>
     return useAxios.get("/api/settings/site")
 }
 
-// 更新不可以
+// 更新不可以,已经解决
 export function siteInfoUpdateApi(data: siteInfoType): Promise<baseResponse<listDataType<siteInfoType>>> {
     return useAxios.put("/api/settings/site", data)
 }

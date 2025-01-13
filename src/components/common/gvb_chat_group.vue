@@ -102,7 +102,7 @@ import {onUploadImg} from "@/api/image_api";
 
 
 // 数组的值一直空的，改成手动更新，可以解决这个问题，添加如下代码
-function handleChange(selectedValues: number[]) {
+function handleChange(selectedValues: any[]) {
   console.log("手动更新选中值：", selectedValues)
   selectIDList.value = selectedValues
 }
@@ -192,7 +192,7 @@ function sendFileEvent() {
 }
 
 
-let socket = ref<WebSocket>()
+let socket = ref<WebSocket | null>()
 
 let index = 0
 

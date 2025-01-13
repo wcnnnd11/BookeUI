@@ -46,9 +46,11 @@ export interface userInfoType {
 原本的请求api是 /api/user_info
 我这里直接使用了另一个接口，用户详细信息
 所以会缺少一些数据，如积分、签名、我的博客
+
+--目前已经补全
  */
 export function userInfoApi(): Promise<baseResponse<userInfoType>> {
-    return useAxios.get("/api/user/detail")
+    return useAxios.get("/api/user_info")
 }
 
 export function userListApi(params: paramsType): Promise<baseResponse<listDataType<userInfoType>>> {
@@ -61,10 +63,10 @@ export interface userUpdateRequest {
     user_id: number,
 }
 
-// 完蛋了，这tm什么时候写的？？？？？？？？？？
-export function userUpdateApi(data: userUpdateRequest): Promise<baseResponse<string>> {
-    return useAxios.put("/api/user_role", data)
-}
+// 移动到src/api/index.ts使用了
+// export function userUpdateApi(data: userUpdateRequest): Promise<baseResponse<string>> {
+//     return useAxios.put("/api/user_role", data)
+// }
 
 export interface userInfoUpdateType {
     link: string
@@ -74,6 +76,7 @@ export interface userInfoUpdateType {
 }
 
 export function userInfoUpdateApi(data: userInfoUpdateType): Promise<baseResponse<string>> {
+
     return useAxios.put("/api/user_info", data)
 }
 

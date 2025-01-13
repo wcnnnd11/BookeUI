@@ -28,6 +28,7 @@ interface routerQuery {
 interface historyState {
   back: string
 }
+
 const back = (window.history.state as historyState).back
 const store = useStore();
 const route = useRoute();
@@ -42,6 +43,7 @@ function ok() {
   router.push(back)
 }
 async function init(query: routerQuery) {
+
   if (!query.code || !query.flag) {
     return
   }
@@ -51,14 +53,15 @@ async function init(query: routerQuery) {
     return
   }
   Message.success(res.msg)
-  store.setToken(res.data)
+  await store.setToken(res.data)
+
 
   // 重定向到点击登录的页面
   let path = localStorage.getItem("redirectPath")
   if (path === null) {
     path = "/"
   }
-  router.push(path)
+  await router.push(path)
 }
 
 init(route.query)

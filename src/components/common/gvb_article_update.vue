@@ -50,8 +50,8 @@
 <script setup lang="ts">
 import {reactive, ref, watch} from "vue";
 import type {articleDataType, articleUpdateType} from "@/api/article_api";
-// import {articleCategoryListApi} from "@/api/article_api";
-// import {tagOptionsApi} from "@/api/tag_api";
+import {articleCategoryListApi} from "@/api/article_api";
+import {tagOptionsApi} from "@/api/tag_api";
 import type {optionType} from "@/types";
 import {imageIdListApi} from "@/api/image_api";
 import type {imageIdType} from "@/api/image_api";

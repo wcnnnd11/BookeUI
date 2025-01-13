@@ -43,7 +43,7 @@ export function menuCreateApi(data: menuCreateRequest): Promise<baseResponse<str
 }
 
 export function menuUpdateApi(id: number, data: menuCreateRequest): Promise<baseResponse<string>> {
-    return useAxios.put("/api/menus/"+id.toString(), data)
+    return useAxios.put("/api/menus/" + id.toString(), data)
 }
 
 export const defaultMenuForm = {
@@ -57,4 +57,14 @@ export const defaultMenuForm = {
     title: "",
     abstractString: "",
     imageIdList: []
+}
+
+export interface menuNameType {
+    id: number
+    title: string
+    path: string
+}
+
+export function menuNameListApi():Promise<baseResponse<menuNameType[]>> {
+    return useAxios.get("/api/menus_names")
 }

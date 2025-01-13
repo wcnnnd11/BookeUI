@@ -62,7 +62,6 @@ const form = reactive<chatGroupConfigType>({
   isOnlinePeople: true,
   isSendImage: false,
   isPaste: false,
-
   isSendFile: false,
   isMd: false,
   contentLength: 100,

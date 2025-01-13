@@ -15,7 +15,23 @@ const router = createRouter({
                     path: "",
                     name: "index",
                     component: () => import('../views/web/index.vue'),
-                }
+                },
+                {
+                    path: "news",
+                    name: "news",
+                    component: () => import('../views/web/news.vue'),
+                },
+                {
+                    path: "search",
+                    name: "search",
+                    component: () => import('../views/web/search.vue'),
+                },
+                {
+                    path: "chat",
+                    name: "chat",
+                    component: () => import('../views/web/chat.vue'),
+                },
+
             ]
         },
         {
@@ -282,7 +298,7 @@ router.beforeEach((to, from, next) => {
         return
     }
     // 如果我是游客，那我就不能访问游客权限为false的
-    if (store.isAdmin && meta.isTourist) {
+    if (store.isTourist && meta.isTourist === false) {
         Message.warning("权限不足2")
         router.push({name: from.name as string})
         return

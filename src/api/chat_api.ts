@@ -30,7 +30,7 @@ export interface chatGroupConfigType {
     isOnlinePeople: boolean
     isSendImage: boolean
     isSendFile?: boolean
-    isPaste: boolean
+    isPaste?: boolean
     isMd?:boolean
     contentLength?:number
 

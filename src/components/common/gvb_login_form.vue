@@ -26,13 +26,17 @@
     <div class="other_login">
       <div class="label">第三方登录</div>
       <div class="icons">
-        <a href="javascript:void (0)" @click="qqLogin">
-          <img src="/image/icon/qq.png" alt="">
+        <a href="javascript:void (0)" @click="warnQQ">
+          <img src="/image/icon/qq.png" alt="" >
         </a>
       </div>
     </div>
   </a-form>
 </template>
+<!--<a href="javascript:void (0)" @click="qqLogin">-->
+<!--<img src="/image/icon/qq.png" alt="" >-->
+<!--</a>-->
+<!--qq登录暂时不可用，加个warning-->
 
 <script setup lang="ts">
 import "@/assets/font.css"
@@ -49,6 +53,10 @@ import {useRoute} from "vue-router";
 const route = useRoute()
 const emits = defineEmits(["ok"])
 const formRef = ref()
+
+function warnQQ(){
+  Message.warning("正在开发中...(ノへ￣、)")
+}
 
 async function loginEmail() {
   let val = await formRef.value.validate()

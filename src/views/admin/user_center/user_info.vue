@@ -120,6 +120,7 @@ function showCropper() {
   clipperRef.value.uploadFile()
 }
 
+
 function onConfirm(val: string) {
   form.avatar = val
   userInfoUpdate()

@@ -1,7 +1,8 @@
 import {defineStore} from 'pinia'
 import {parseToken} from "@/utils/jwt";
-import {logoutApi} from "@/api/user_api";
+import {logoutApi, userInfoApi} from "@/api/user_api";
 import type {Themes} from "md-editor-v3";
+import {Message} from "@arco-design/web-vue";
 
 export interface userStoreInfoType {
     user_name: string;
@@ -67,24 +68,21 @@ export const useStore = defineStore('counter', {
 
         // 设置token
         async setToken(token: string) {
-            this.userInfo.token = token
             // 调用用户信息的接口
-            // let res =await userInfoApi()
+            this.userInfo.token = token
+            let res = await userInfoApi()
             let info = parseToken(token)
-            // 用户信息部分，先不使用，后端不全
-            // let data=res.data
-            //
-            // this.userInfo = {
-            //     user_name: data.user_name,
-            //     nick_name: data.nick_name,
-            //     role: info.role,
-            //     user_id: info.user_id,
-            //     avatar: data.avatar,
-            //     token: token,
-            //     exp: info.exp,
-            // }
+            let data = res.data
 
-            Object.assign(this.userInfo, info)
+            this.userInfo = {
+                user_name: data.user_name,
+                nick_name: data.nick_name,
+                role: info.role,
+                user_id: info.user_id,
+                avatar: data.avatar,
+                token: token,
+                exp: info.exp,
+            }
             localStorage.setItem("userInfo", JSON.stringify(this.userInfo))
         },
 // 加载token
@@ -100,15 +98,14 @@ export const useStore = defineStore('counter', {
                 return;
             }
             // 判断token是不是过期了
-            // 先不启用，方便测试
-            // let exp = Number(this.userInfo.exp) * 1000
-            // let nowTime = new Date().getTime()
-            // if (exp - nowTime <= 0) {
-            //     // 过期
-            //     Message.warning("登录已过期")
-            //     this.clearUserInfo()
-            //     return;
-            // }
+            let exp = Number(this.userInfo.exp) * 1000
+            let nowTime = new Date().getTime()
+            if (exp - nowTime <= 0) {
+                // 过期
+                Message.warning("登录已过期")
+                this.clearUserInfo()
+                return;
+            }
         },
 // 注销
         async logout() {
