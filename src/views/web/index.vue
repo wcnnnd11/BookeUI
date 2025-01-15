@@ -1,12 +1,12 @@
 <template>
   <div class="index_view">
-    <Gvb_nav></Gvb_nav>
-    首页
+    <gvb_nav></gvb_nav>
+    <gvb_banner></gvb_banner>
   </div>
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
 import Gvb_nav from "@/components/web/gvb_nav.vue";
+import gvb_banner from "../../components/web/gvb_banner.vue";
 
 
 </script>
@@ -14,7 +14,8 @@ import Gvb_nav from "@/components/web/gvb_nav.vue";
 <style lang="scss">
 .index_view{
   background-color: #6a6a6a;
-  height: 100vh;
+  height: 200vh;
 }
 
 </style>
+

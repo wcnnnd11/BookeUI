@@ -1,11 +1,12 @@
+<template>
+  <router-view class="web_view"/>
+</template>
 <script setup lang="ts">
 
 </script>
 
-<template>
-<router-view></router-view>
-</template>
-
 <style scoped>
-
+ .web_view{
+   background-color: var(--bg);
+ }
 </style>

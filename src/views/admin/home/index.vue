@@ -71,7 +71,7 @@
               >{{ item.title }}</a-typography-paragraph></span>
 
             </span>
-            <span class="date">{{ relativeCurrentTime(item.title) }}</span>
+            <span class="date">{{ relativeCurrentTime(item.created_at) }}</span>
 
           </div>
         </gvb_card>
@@ -185,43 +185,16 @@ interface updateLogType {
 const updateLogList: updateLogType[] = [
   {
     title: "已知bug修复",
-    created_at: "2024-10-05 00:00:00"
+    created_at: "2025-01-11 11:11:00"
   },
   {
     title: "已知bug修复",
-    created_at: "2024-10-15 00:00:00"
+    created_at: "2025-01-12 11:12:00"
   },
   {
     title: "已知bug修复",
-    created_at: "2024-11-25 00:00:00"
+    created_at: "2025-01-13 11:13:00"
   },
-  {
-    title: "已知bug修复",
-    created_at: "2024-11-05 00:00:00"
-  },
-  {
-    title: "已知bug修复",
-    created_at: "2024-11-15 00:00:00"
-  },
-  {
-    title: "已知bug修复",
-    created_at: "2024-11-25 00:00:00"
-  },{
-    title: "已知bug修复",
-    created_at: "2024-12-05 00:00:00"
-  },
-  {
-    title: "已知bug修复",
-    created_at: "2024-12-15 00:00:00"
-  },
-  {
-    title: "已知bug修复",
-    created_at: "2024-12-25 00:00:00"
-  },
-  {
-    title: "已知bug修复",
-    created_at: "2025-1-05 00:00:00"
-  }
 
 ]
 

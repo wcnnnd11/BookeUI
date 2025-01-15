@@ -1,6 +1,6 @@
 <template>
   <div class="index_view">
-    <Gvb_nav></Gvb_nav>
+    <Gvb_nav no-scroll></Gvb_nav>
     搜索
   </div>
 </template>

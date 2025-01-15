@@ -1,12 +1,12 @@
 <template>
   <div class="index_view">
     <Gvb_nav></Gvb_nav>
-    新闻
+    <Gvb_banner_original></Gvb_banner_original>
   </div>
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
 import Gvb_nav from "@/components/web/gvb_nav.vue";
+import Gvb_banner_original from "@/components/web/gvb_banner_original.vue";
 
 
 </script>

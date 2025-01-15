@@ -1,5 +1,5 @@
 <template>
-  <div class="gvb_nav">
+  <div :class="{gvb_nav:true,isShow:isShow}">
     <div class="gvb_nav_container">
       <div class="left">
         <div class="logo">
@@ -41,10 +41,39 @@ import {useStore} from "@/stores"
 import Gvb_user_info_menu from "@/components/common/gvb_user_info_menu.vue";
 import {menuNameListApi} from "@/api/menu_api";
 import type {menuNameType} from "@/api/menu_api";
+import {onUnmounted} from "vue";
+
+interface Props {
+  noScroll?: boolean // 不需要滚动监听
+}
+
+const props = defineProps<Props>()
+const {noScroll = false} = props
 
 const store = useStore();
 
 const navList = ref<menuNameType[]>([]);
+
+const isShow = ref(true);
+
+
+if (!noScroll) {
+  isShow.value = false
+  window.addEventListener("scroll", scroll)
+}
+
+
+function scroll() {
+  let top = document.documentElement.scrollTop
+  isShow.value = top >= 200;
+}
+
+onUnmounted(() => {
+  if (!noScroll) {
+    window.removeEventListener("scroll", scroll);
+
+  }
+})
 
 async function getData() {
 
@@ -57,10 +86,8 @@ async function getData() {
     }
 
   }
-
   let res = await menuNameListApi()
   navList.value = res.data
-
   sessionStorage.setItem("navList", JSON.stringify(navList.value))
 }
 
@@ -72,12 +99,29 @@ getData()
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: white;
   font-family: 幼圆;
+  position: fixed;
+  transition: all .3s;
+  color: var(--nav_text_color);
+  z-index: 100;
+
+  &.isShow {
+    background-color: var(--color-bg-1);
+    color: var(--color-text-2);
+
+    a {
+      color: var(--color-text-2);
+
+    }
+  }
 
   a {
     text-decoration: none;
-    color: var(--color-text-1);
+    color: var(--nav_text_color);
+
+    &.router-link-exact-active {
+      color: var(--active);
+    }
   }
 
   .gvb_nav_container {
@@ -101,7 +145,6 @@ getData()
         .en_slogan {
           font-size: 16px;
           margin-top: 1px;
-          color: var(--color-text-2);
         }
       }
 

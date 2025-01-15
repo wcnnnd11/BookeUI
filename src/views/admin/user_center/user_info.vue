@@ -10,7 +10,8 @@
                    :preview-width="clipperData.previewWidth"
                    @confirm="onConfirm"/>
       <gvb_title title="用户信息"></gvb_title>
-      <a-form ref="formRef" :model="form" :label-col-props="{span:isLaptops1? 6:4}" :wrapper-col-props="{span:isLaptops1? 18:20}">
+      <a-form ref="formRef" :model="form" :label-col-props="{span:isLaptops1? 6:4}"
+              :wrapper-col-props="{span:isLaptops1? 18:20}">
         <a-form-item label="用户名">
           <span>{{ form.user_name }}</span>
         </a-form-item>
@@ -52,7 +53,7 @@
       <div class="action_group">
         <a-button @click="bindEmailVisible=true" type="primary">绑定邮箱</a-button>
         <a-button @click="updatePasswordVisible=true" type="primary">修改密码</a-button>
-        <a-button type="primary" status="danger">注销退出</a-button>
+        <a-button type="primary" status="danger" @click="logOut">注销退出</a-button>
       </div>
     </div>
 
@@ -84,9 +85,21 @@ import Gvb_update_password from "@/components/common/gvb_update_password.vue";
 import Gvb_bind_email from "@/components/common/gvb_bind_email.vue";
 import Gvb_cropper from "@/components/common/gvb_cropper.vue";
 import Gvb_user_info_preview from "@/components/common/gvb_user_info_preview.vue";
-import { Random } from "mockjs";
+import {Random} from "mockjs";
+import {useStore} from "@/stores";
+import router from "@/router";
 
 const isLaptops1 = isLaptops
+
+const store = useStore()
+function logOut() {
+  store.logout();
+  router.push({ name: "index" }).then(() => {
+    Message.success("已退出登录")
+  })
+}
+
+
 
 //定义interface类型
 interface IClipper {
